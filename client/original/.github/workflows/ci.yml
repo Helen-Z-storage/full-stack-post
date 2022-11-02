@@ -1,0 +1,27 @@
+name: CI
+on: [pull_request]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16.x'
+          cache: 'yarn'
+      - name: Ensure database file has not changed
+        shell: bash
+        run: |
+          if [[ $(git diff origin/main -- database.db) ]]; then
+            echo "Please do not modify database file. It can be reset by running git checkout origin/main -- database.db"
+            exit 1
+          else
+            echo "Database file intact."
+          fi
+      - run: yarn install --frozen-lockfile
+      - run: yarn test
