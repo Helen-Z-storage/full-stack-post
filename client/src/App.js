@@ -9,7 +9,7 @@ class App extends React.Component {
   }
 
   callAPI() {
-      fetch("http://localhost:8080/testAPI")
+      fetch("http://localhost:8080/routes/testAPI")
           .then(res => res.text())
           .then(res => this.setState({ apiResponse: res }))
           .catch(err => err);
