@@ -3,12 +3,13 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import Login from './Login';
+import Register from './Register';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 
 // adding data for pure frontend testing
 const SEED_PW = '123456';
-
+/*
 let localStorage = window.localStorage;
 let users = [
   {id: 1, username: 'thomas', password: SEED_PW},
@@ -63,14 +64,18 @@ let userPosts = [
 localStorage.setItem("User", JSON.stringify(users));
 localStorage.setItem("Post", JSON.stringify(posts));
 localStorage.setItem("UserPost", JSON.stringify(userPosts));
-
+*/
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<Login/>} />
+        <Route path="/register" element={<Register />} />
         <Route path="/home" element={<App/>} />
+        <Route path="/add" element={<AddPost/>} />
+        <Route path="/search" element={<SearchPost/>} />
+        <Route path="/update" element={<UpdatePost/>} />
         <Route path="/" element={<Navigate to="/login" exact />}/>
       </Routes>
     </BrowserRouter>

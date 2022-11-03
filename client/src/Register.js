@@ -3,19 +3,35 @@ import App from './App';
 import {Routes, Route, useNavigate} from 'react-router-dom';
 import React, { useState } from 'react';
 
-function Login() {
+let localStorage = window.localStorage
+
+function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
   
-  const handleLogin = () => {
+  const handleRegister = () => {
     if (username && password) {
-      //this.props.history.replace("/home");
-      window.localStorage.setItem("islogin", 1);
-      //this.setState({ apiRequest: {username, password} });
-      alert("欢迎！");
-      navigate('/home');
+        let users = localStorage.getItem("User");
+        users = JSON.parse(users);
+        console.log(users);
+        for (const user of users) {
+            if (user.username === username) {
+                setError("已经注册此账户");
+                return;
+            }
+        }
+        users.push({
+            id: users.length + 1,
+            username: username,
+            password: password
+        });
+        setError(JSON.stringify(users));
+        localStorage.setItem("User", JSON.stringify(users));
+      alert("成功注册");
+      navigate('/login');
+      //event.preventDefault();
     } else {
       setError("请输入用户名和密码！");
     }
@@ -23,7 +39,7 @@ function Login() {
 
   return (
     <div>
-    <form onSubmit={() => handleLogin(username, password)}>
+    <form onSubmit={() => handleRegister()}>
       <label>
         User Name:
         <input type="text" name="username" value={username} 
@@ -36,15 +52,13 @@ function Login() {
       </label>
       <input type="submit" value="Submit" />
     </form>
-          <button key={1} onClick={() => navigate('/register')}>Register</button>
+          <button key={1} onClick={() => navigate('/login')}>Login</button>
           <div>{error}</div>
-
-
     </div>
   );
 }
 
-export default Login;
+export default Register;
 
 // citation, some code from
 // https://juejin.cn/post/6984667855115517988

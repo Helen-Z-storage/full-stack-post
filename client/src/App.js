@@ -1,7 +1,38 @@
 import logo from './logo.svg';
 import './App.css';
-import React from 'react';
+import React, { useState } from 'react';
+import {Routes, Route, useNavigate} from 'react-router-dom';
+import NavigationBar from './navigationBar';
+import ListPost from './listPost';
 
+function App() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+  
+  const handleLogin = (username, password) => {
+    if (username && password) {
+      //this.props.history.replace("/home");
+      window.localStorage.setItem("islogin", 1);
+      //this.setState({ apiRequest: {username, password} });
+      alert("欢迎！");
+      navigate('/home');
+    } else {
+      setError("请输入用户名和密码！");
+    }
+  }
+
+  return (
+    <div>
+      <NavigationBar />
+      <ListPost />
+    </div>
+  );
+}
+
+
+/*
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -41,4 +72,5 @@ class App extends React.Component {
   }
 }
 
+*/
 export default App;
