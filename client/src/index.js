@@ -4,12 +4,15 @@ import './index.css';
 import App from './App';
 import Login from './Login';
 import Register from './Register';
+import AddPost from './addPost';
+import SearchPost from './searchPost';
+import UpdatePost from './updatePost';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 
 // adding data for pure frontend testing
-const SEED_PW = '123456';
 /*
+const SEED_PW = '123456';
 let localStorage = window.localStorage;
 let users = [
   {id: 1, username: 'thomas', password: SEED_PW},

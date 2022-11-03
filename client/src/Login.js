@@ -1,6 +1,5 @@
 //import './App.css';
-import App from './App';
-import {Routes, Route, useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 
 function Login() {
