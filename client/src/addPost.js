@@ -9,12 +9,12 @@ function AddPost() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   
-  const handleAdding = () => {
+  const handleAdding = (event) => {
     if (text) {
       alert("成功add" + " tags: " + JSON.stringify(tags)
       + " text: " + text);
       navigate('/home');
-      //event.preventDefault();
+      event.preventDefault();
     } else {
       setError("请输入post的内容！");
     }
@@ -22,7 +22,7 @@ function AddPost() {
 
   return (
     <div>
-    <form onSubmit={() => handleAdding()}>
+    <form onSubmit={(event) => handleAdding(event)}>
       <label>
         Post Text, required:
         <input type="text" name="Text" value={text} 

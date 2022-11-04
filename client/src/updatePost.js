@@ -11,14 +11,14 @@ function UpdatePost() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   
-  const handleUpdating = () => {
+  const handleUpdating = (event) => {
     if (authorIds || tags || text) {
       alert("成功update" + " authorIds: " + JSON.stringify(authorIds)
                         + " tags: " + JSON.stringify(tags)
                         + " text: " + text
       );
       navigate('/home');
-      //event.preventDefault();
+      event.preventDefault();
     } else {
       setError("请输入至少一个更新内容！");
     }
@@ -26,7 +26,7 @@ function UpdatePost() {
 
   return (
     <div>
-    <form onSubmit={() => handleUpdating()}>
+    <form onSubmit={(event) => handleUpdating(event)}>
       <label>
         Author Ids split by ",", optional:
         <input type="text" name="AuthorIds" value={authorIds} 

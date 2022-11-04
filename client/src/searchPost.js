@@ -11,14 +11,14 @@ function AddPost() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   
-  const handleAdding = () => {
+  const handleAdding = (event) => {
     if (authorIds) {
       alert("成功search" + " authorIds: " + authorIds
       + " sortBy: " + sortBy
       + " direction: " + direction
       );
       navigate('/home');
-      //event.preventDefault();
+      event.preventDefault();
     } else {
       setError("请输入至少一个searching authorId！");
     }
@@ -26,7 +26,7 @@ function AddPost() {
 
   return (
     <div>
-    <form onSubmit={() => handleAdding()}>
+    <form onSubmit={(event) => handleAdding(event)}>
       <label>
         Author Ids split by ",", required:
         <input type="text" name="AuthorIds" value={authorIds} 
