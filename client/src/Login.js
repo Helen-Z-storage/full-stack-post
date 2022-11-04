@@ -25,8 +25,12 @@ function Login() {
 
   const handleLogin = (event) => {
     callLogInAPI();
-    alert("欢迎！");
-    navigate('/home');
+    console.log(errorMessage);
+    if (!errorMessage) {
+
+      alert("欢迎！");
+      navigate('/home');
+    }
     event.preventDefault();
   }
 
@@ -44,12 +48,15 @@ function Login() {
     };
     const res = await fetch("http://localhost:8080/api/login", requestBody);
     const responseBody = await res.json();
-    const { error, token } = responseBody;
+    const { error, token, id} = responseBody;
+    console.log(responseBody);
+    console.log(error, token, id);
     if (error) {
       setErrorMessage(error);
     }
     setApiResponse(responseBody);
     window.localStorage.setItem("token", token);
+    window.localStorage.setItem("UserId", id);
     // const { decodedToken } = useJwt(token);
     // window.localStorage.setItem("expireDate", decodedToken.exp);
     return token;

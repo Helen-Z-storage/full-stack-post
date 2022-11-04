@@ -63,6 +63,7 @@ router.post('/login', async (req, res, next) => {
       return ErrorHandler.codeError(res, 401, ErrorDic.failLogIn);
     }
     // create new log in token
+    console.log("created token");
     const token = jwt.sign(
       { id: user.dataValues.id },
       process.env.SESSION_SECRET,

@@ -24,8 +24,7 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "morgan": "~1.9.1",
-    "sequelize": "^6.25.3",
-    "sqlite3": "^5.0.2"
+    "sequelize": "^6.25.3"
   },
   "keywords": [],
   "author": "",
