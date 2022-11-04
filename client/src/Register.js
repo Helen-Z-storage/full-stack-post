@@ -10,7 +10,7 @@ function Register() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   
-  const handleRegister = () => {
+  const handleRegister = (event) => {
     if (username && password) {
         let users = localStorage.getItem("User");
         users = JSON.parse(users);
@@ -28,7 +28,7 @@ function Register() {
         localStorage.setItem("User", JSON.stringify(users));
       alert("成功注册");
       navigate('/login');
-      //event.preventDefault();
+      event.preventDefault();
     } else {
       setError("请输入用户名和密码！");
     }
@@ -36,7 +36,7 @@ function Register() {
 
   return (
     <div>
-    <form onSubmit={() => handleRegister()}>
+    <form onSubmit={(event) => handleRegister(event)}>
       <label>
         User Name:
         <input type="text" name="username" value={username} 

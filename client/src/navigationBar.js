@@ -5,7 +5,7 @@ import React from 'react';
 function NavigationBar() {
   const navigate = useNavigate();
   const handleLogout = () => {
-    window.localStorage.setItem("islogin", 0);
+    window.localStorage.removeItem("token");
     alert("欢迎下次再来！");
     navigate('/login');
   }
