@@ -58,16 +58,10 @@ router.post('/login', async (req, res, next) => {
     if (!username || !password) {
       return ErrorHandler.codeError(res, 400, ErrorDic.emptyLogInField);
     }
-    console.log("valid password");
-
     const user = await User.findUserByUsername(req.body.username);
     if (!user || !User.correctPassword(user, password)) {
       return ErrorHandler.codeError(res, 401, ErrorDic.failLogIn);
     }
-    console.log("correct password");
-    console.log(JSON.stringify(user.dataValues, null, 2));
-    console.log(process.env);
-    
     // create new log in token
     const token = jwt.sign(
       { id: user.dataValues.id },

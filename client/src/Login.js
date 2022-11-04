@@ -1,49 +1,64 @@
 //import './App.css';
 import { useNavigate } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useJwt } from "react-jwt";
+//const jwt = require('jsonwebtoken');
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [apiResponse, setApiResponse] = useState({});
-  const [error, setError] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
-  
-  const handleLogin = () => {
-    if (username && password) {
-      callLogInAPI();
-      //this.props.history.replace("/home");
-      window.localStorage.setItem("islogin", 1);
-      //this.setState({ apiRequest: {username, password} });
-      alert("欢迎！");
-      navigate('/home');
-    } else {
-      setError("请输入用户名和密码！");
+
+  /*
+  useEffect(() =>{
+    // componentWillMount
+    const expireDate = window.localStorage.setItem("expireDate");
+    const secondsLeft = expireDate - new Date().getTime;
+    if (secondsLeft <= 0) {
+      handleLogout();
     }
+    // return () => {componmentWillUnmount}
+  }, []);
+  */
+
+  const handleLogin = (event) => {
+    callLogInAPI();
+    alert("欢迎！");
+    navigate('/home');
+    event.preventDefault();
   }
 
-  const callLogInAPI = () => {
-    const b = { username: username, password: password };
-    alert(JSON.stringify(b, null, 2));
-    const responseBody = {
+  const handleLogout = () => {
+    window.localStorage.removeItem("token");
+    alert("欢迎下次再来！");
+    navigate('/login');
+  }
+
+  const callLogInAPI = async () => {
+    const requestBody = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(b)
+      body: JSON.stringify({ username: username, password: password })
     };
-    fetch("http://localhost:8080/api/login", responseBody)
-    .then(res => {res.json();alert(JSON.stringify(res, null, 2));})
-    .then(data => {setApiResponse(data);})
-    .catch((error) => {
-      console.error('Error:', error);
-    });
-    
-    alert(JSON.stringify(apiResponse, null, 2));
+    const res = await fetch("http://localhost:8080/api/login", requestBody);
+    const responseBody = await res.json();
+    const { error, token } = responseBody;
+    if (error) {
+      setErrorMessage(error);
+    }
+    setApiResponse(responseBody);
+    window.localStorage.setItem("token", token);
+    // const { decodedToken } = useJwt(token);
+    // window.localStorage.setItem("expireDate", decodedToken.exp);
+    return token;
   }
 
 
   return (
     <div>
-    <form onSubmit={() => handleLogin(username, password)}>
+    <form onSubmit={(event) => handleLogin(event)}>
       <label>
         User Name:
         <input type="text" name="username" value={username} 
@@ -57,7 +72,7 @@ function Login() {
       <input type="submit" value="Submit" />
     </form>
           <button key={1} onClick={() => navigate('/register')}>Register</button>
-          <div>{error}</div>
+          <div>{errorMessage}</div>
 
 
     </div>
