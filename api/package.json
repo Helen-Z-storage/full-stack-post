@@ -3,12 +3,18 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "dev": "nodemon src/index.js",
+    "lint": "eslint --fix src",
+    "test": "cross-env SESSION_SECRET=notsecure jest --injectGlobals=false",
+    "seed": "node src/db/seed.js",
+    "prettier": "prettier src --write"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "debug": "~2.6.9",
     "express": "~4.16.1",
     "helmet": "^6.0.0",
@@ -17,6 +23,25 @@
     "jsonwebtoken": "^8.5.1",
     "morgan": "~1.9.1",
     "sequelize": "^6.25.3",
-    "sqlite3": "^5.1.2"
+    "dotenv": "^10.0.0",
+    "lodash": "^4.17.21",
+    "sqlite3": "^5.0.2"
+  },
+  "keywords": [],
+  "author": "",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "license": "",
+  "devDependencies": {
+    "@jest/globals": "^27.5.1",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.15.0",
+    "jest": "^27.5.1",
+    "nodemon": "^2.0.7",
+    "prettier": "^2.6.2",
+    "sqlite3": "^5.1.2",
+    "supertest": "^6.2.2"
   }
 }

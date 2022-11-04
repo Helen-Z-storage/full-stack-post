@@ -65,3 +65,11 @@ curl --location --request POST 'localhost:8080/api/posts' \
 
 - If you encounter an error related to `secretOrPrivateKey` when attempting to make a request, please ensure you have created a .env file in the root directory as per the _Getting Started_ instructions.
 - If you are on M1 mac, you might encounter `ERR_DLOPEN_FAILED` when you try to install dependencies locally then run the server in docker (or vice versa). In case of error, try removing the `node_modules` directory and restart `docker compose up`.
+
+
+# Self find Common Setup Errors
+\node_modules\bcrypt\lib\binding\napi-v3\bcrypt_lib.node is not a valid Win32 application.
+- delete \node_modules\bcrypt folder and run "npm install bcrypt"
+
+Error: Please install sqlite3 package manually
+- delete \node_modules\bcrypt folder and run " npm rebuild"

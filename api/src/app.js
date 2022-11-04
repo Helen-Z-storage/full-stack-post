@@ -5,9 +5,10 @@ const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const helmet = require('helmet');
 var cors = require("cors");
+require('dotenv').config();
 
 const middlewares = require('./middlewares');
-const routes = require('./routes');
+const api = require('./routes');
 
 const app = express();
 
@@ -24,7 +25,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(middlewares.auth);
-app.use('/routes', routes);
+app.use('/api', api);
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);
 
