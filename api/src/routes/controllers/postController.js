@@ -18,8 +18,8 @@ class PostController {
       if (!req.user) {
         return ErrorHandler.codeError(res, 401, ErrorDic.unAuthorizedUser);
       }
-      
-      console.log(req);
+
+      console.log(req.query);
       const { authorIds } = req.query;
       let { sortBy, direction } = req.query;
 

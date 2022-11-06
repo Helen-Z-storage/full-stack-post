@@ -3,12 +3,12 @@ import { useNavigate} from 'react-router-dom';
 import React, { useState } from 'react';
 const tagSpliter = ",";
 
-function UpdatePost() {
+function UpdatePost(props) {
     
+  const {posts, setPosts, error, setError} = props;
   const [authorIds, setAuthorIds] = useState([]);
   const [tags, setTags] = useState([]);
   const [text, setText] = useState("");
-  const [error, setError] = useState("");
   const navigate = useNavigate();
   
   const handleUpdating = (event) => {
@@ -18,6 +18,7 @@ function UpdatePost() {
                         + " text: " + text
       );
       navigate('/home');
+      setError("");
       event.preventDefault();
     } else {
       setError("请输入至少一个更新内容！");
@@ -44,7 +45,7 @@ function UpdatePost() {
       </label>
       <input type="submit" value="Submit" />
     </form>
-          <button key={1} onClick={() => navigate('/home')}>Back</button>
+          <button key={1} onClick={() => {navigate('/home');setError("");}}>Back</button>
           <div>{error}</div>
     </div>
   );

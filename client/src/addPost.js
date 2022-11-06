@@ -2,11 +2,10 @@
 import { useNavigate} from 'react-router-dom';
 import React, { useState } from 'react';
 
-function AddPost() {
-    
+function AddPost(props) {
+  const {posts, setPosts, error, setError} = props;
   const [text, setText] = useState("");
   const [tags, setTags] = useState("");
-  const [error, setError] = useState("");
   const navigate = useNavigate();
   
   const handleAdding = (event) => {
@@ -14,6 +13,7 @@ function AddPost() {
       alert("成功add" + " tags: " + JSON.stringify(tags)
       + " text: " + text);
       navigate('/home');
+      setError("");
       event.preventDefault();
     } else {
       setError("请输入post的内容！");
@@ -35,7 +35,7 @@ function AddPost() {
       </label>
       <input type="submit" value="Submit" />
     </form>
-          <button key={1} onClick={() => navigate('/home')}>Back</button>
+          <button key={1} onClick={() => {navigate('/home');setError("");}}>Back</button>
           <div>{error}</div>
     </div>
   );

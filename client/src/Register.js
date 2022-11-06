@@ -4,10 +4,11 @@ import React, { useState } from 'react';
 
 let localStorage = window.localStorage
 
-function Register() {
+function Register(props) {
+  const {error, setError} = props;
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  
   const navigate = useNavigate();
   
   const handleRegister = (event) => {
@@ -16,7 +17,7 @@ function Register() {
         users = JSON.parse(users);
         for (const user of users) {
             if (user.username === username) {
-                setError("已经注册此账户");
+              setError("已经注册此账户");
                 return;
             }
         }
@@ -28,6 +29,7 @@ function Register() {
         localStorage.setItem("User", JSON.stringify(users));
       alert("成功注册");
       navigate('/login');
+      setError("");
       event.preventDefault();
     } else {
       setError("请输入用户名和密码！");
@@ -49,7 +51,7 @@ function Register() {
       </label>
       <input type="submit" value="Submit" />
     </form>
-          <button key={1} onClick={() => navigate('/login')}>Login</button>
+          <button key={1} onClick={() => {navigate('/login'); setError("");}}>Login</button>
           <div>{error}</div>
     </div>
   );

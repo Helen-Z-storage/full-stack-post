@@ -3,12 +3,11 @@ import { useNavigate} from 'react-router-dom';
 import React, { useState } from 'react';
 const tagSpliter = ",";
 
-function AddPost() {
-    
+function SearchPost(props) {
+  const {error, setError} = props;
   const [authorIds, setAuthorIds] = useState("");
   const [sortBy, setSortBy] = useState("");
   const [direction, setDirection] = useState("");
-  const [error, setError] = useState("");
   const navigate = useNavigate();
   
   const handleAdding = (event) => {
@@ -18,6 +17,7 @@ function AddPost() {
       + " direction: " + direction
       );
       navigate('/home');
+      setError("");
       event.preventDefault();
     } else {
       setError("请输入至少一个searching authorId！");
@@ -44,10 +44,10 @@ function AddPost() {
       </label>
       <input type="submit" value="Submit" />
     </form>
-          <button key={1} onClick={() => navigate('/home')}>Back</button>
+          <button key={1} onClick={() => {navigate('/home'); setError("");}}>Back</button>
           <div>{error}</div>
     </div>
   );
 }
 
-export default AddPost;
+export default SearchPost;
