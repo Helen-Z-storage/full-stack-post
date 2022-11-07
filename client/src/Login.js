@@ -14,8 +14,8 @@ function Login(props) {
   const navigate = useNavigate();
 
 
-  const handleLogin = (event, error) => {
-    props.dispatch(pageActions.pageloginLoadUser(username, password, navigate));
+  const handleLogin = (event) => {
+    props.dispatch(pageActions.pageLoginLoadUser(username, password, navigate));
     event.preventDefault();
   }
 

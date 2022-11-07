@@ -4,16 +4,22 @@ import React, { useState } from 'react';
 
 import { connect } from "react-redux";
 import * as uiActions from "./redux/actions/uiActions";
+import * as pageActions from "./redux/actions/pageActions";
 
 let localStorage = window.localStorage
 
 function Register(props) {
-  const {error, setError} = props;
+  let error = props.register.getIn("register.errorMsg".split("."));
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   
   const navigate = useNavigate();
   
+  const handleRegister = (event) => {
+    props.dispatch(pageActions.pageRegisterLoadUser(username, password, navigate));
+    event.preventDefault();
+  }
+/*
   const handleRegister = (event) => {
     if (username && password) {
         let users = localStorage.getItem("User");
@@ -38,7 +44,7 @@ function Register(props) {
       props.dispatch(uiActions.setError("请输入用户名和密码！"));
     }
   }
-
+*/
   return (
     <div>
     <form onSubmit={(event) => handleRegister(event)}>
@@ -54,13 +60,18 @@ function Register(props) {
       </label>
       <input type="submit" value="Submit" />
     </form>
-          <button key={1} onClick={() => {navigate('/login'); props.dispatch(uiActions.setError(""));}}>Login</button>
-          <div>{props.ui.get("error")}</div>
+          <button key={1} onClick={() => navigate('/login')}>Login</button>
+          <div>{error}</div>
     </div>
   );
 }
 
-export default connect ((state) => {return {ui:state.ui}})(Register);
-
+export default connect (
+  (state) => {
+    return {
+      ui: state.ui,
+      register: state.register
+    }
+  })(Register);
 // citation, some code from
 // https://juejin.cn/post/6984667855115517988
