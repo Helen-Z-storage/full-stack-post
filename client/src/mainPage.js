@@ -6,29 +6,29 @@ import NavigationBar from './navigationBar';
 
 import { connect } from "react-redux";
 import * as uiAction from "./redux/actions/uiActions";
+import * as pageActions from "./redux/actions/pageActions";
 
 const tagSpliter = ",";
 const localStorage = window.localStorage;
 
 function MainPage(props) {
-    const {posts, setPosts, error, setError} = props;
+    let error = props.posts.getIn("posts.errorMsg".split("."));
+    const userId = window.localStorage.getItem("UserId");
+    
+    const posts = props.posts.getIn("posts.postsData".split("."));
+
+    /*
+
+    useEffect(() => {
+        // componentWillMount
+        props.dispatch(pageActions.pageLoginLoadUser({authorIds: userId}));
+        // return () => {// componmentWillUnmount}
+    }, []);
+    */
+
     let postLst = <div></div>
 
-  console.log(posts);
-/*
-  if (!posts) {
-    const response = fetchData();
-    if (response.error) {
-        setError(response.error);
-    } else {
-        localStorage.setItem("posts", response.posts);
-        setPosts(response.posts);
-    }
-  }
-
-*/
-
-    postLst = JSON.parse((posts || [])).map((post) => {
+    postLst = posts.map((post) => {
         return (
         <li key={uuidv4()}>
             <table>
@@ -63,7 +63,7 @@ function MainPage(props) {
             </tr>
             <tr>
                 <td>
-                    {props.ui.get("error")}
+                    {error}
                     <ul>
                         {postLst}
                     </ul>
@@ -75,4 +75,10 @@ function MainPage(props) {
   );
 }
 
-export default connect ((state) => {return {ui:state.ui}})(MainPage);
+export default connect (
+    (state) => {
+      return {
+        ui: state.ui,
+        posts: state.posts
+      }
+    })(MainPage);

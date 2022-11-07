@@ -22,19 +22,19 @@ export default function reducer(state=initialState(), action) {
 reducer.prototype[actionType.login.loginLoadUserPending] = (state, action) => {
     return state.setIn("login.loading".split("."), true)
                 .setIn("login.loaded".split("."), false)
-                .setIn("login.favList".split("."), {})
+                .setIn("login.userData".split("."), {})
                 .setIn("login.errorMsg".split("."), "");
 }
 
 reducer.prototype[actionType.login.loginLoadUserRejected] = (state, action) => {
     return state.setIn("login.loading".split("."), false)
                 .setIn("login.loaded".split("."), false)
-                .setIn("login.favList".split("."), {})
+                .setIn("login.userData".split("."), {})
                 .setIn("login.errorMsg".split("."), action.payload);
 }
 reducer.prototype[actionType.login.loginLoadUserFulfilled] = (state, action) => {
     return state.setIn("login.loading".split("."), false)
                 .setIn("login.loaded".split("."), true)
-                .setIn("login.favList".split("."), action.payload)
+                .setIn("login.userData".split("."), action.payload)
                 .setIn("login.errorMsg".split("."), "");
 }

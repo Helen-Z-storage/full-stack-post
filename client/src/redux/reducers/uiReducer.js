@@ -4,7 +4,8 @@ import { fromJS } from "immutable";
 const initialState = () => {
     return fromJS(
         {
-            error: ""
+            error: "",
+            loggedIn: false
         }
     )
 }
@@ -17,5 +18,9 @@ export default function reducer(state=initialState(), action) {
 }
 
 reducer.prototype[actionType.ui.setError] = (state, action) => {
-    return state.set("setError", action.payload);
+    return state.set("error", action.payload);
+}
+
+reducer.prototype[actionType.ui.setLoggedIn] = (state, action) => {
+    return state.set("loggedIn", action.payload);
 }

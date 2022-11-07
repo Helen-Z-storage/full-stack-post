@@ -1,7 +1,8 @@
 import { ActionType } from "redux-promise-middleware";
 export const actionType = {
     ui: {
-        setError: "UI_SETERROR",
+        setError:    "UI_SETERROR",
+        setLoggedIn: "UI_SETLOGGEDIN"
     },
     login: {
         loginLoadUserPending:  `LOGIN_LOADUSER${ActionType.Pending}`,
@@ -12,5 +13,10 @@ export const actionType = {
         registerLoadUserPending:  `REGISTER_LOADUSER${ActionType.Pending}`,
         registerLoadUserFulfilled:`REGISTER_LOADUSER${ActionType.Fulfilled}`,
         registerLoadUserRejected: `REGISTER_LOADUSER${ActionType.Rejected}`
+    },
+    posts: {
+        postsLoadUserPending:  `POSTS_LOADUSER${ActionType.Pending}`,
+        postsLoadUserFulfilled:`POSTS_LOADUSER${ActionType.Fulfilled}`,
+        postsLoadUserRejected: `POSTS_LOADUSER${ActionType.Rejected}`
     }
 }

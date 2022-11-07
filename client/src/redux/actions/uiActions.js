@@ -6,3 +6,10 @@ export const setError = (error) => {
         payload: error
     }
 }
+
+export const setLoggedIn = (loggedIn) => {
+    return {
+        type: actionType.ui.setLoggedIn,
+        payload: loggedIn
+    }
+}

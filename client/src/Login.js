@@ -6,28 +6,45 @@ import { useJwt } from "react-jwt";
 import { connect } from "react-redux";
 import * as uiActions from "./redux/actions/uiActions";
 import * as pageActions from "./redux/actions/pageActions";
+import { actionType } from "./redux/actions/actionType";
 
 function Login(props) {
   let error = props.login.getIn("login.errorMsg".split("."));
+  
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
 
   const handleLogin = (event) => {
-    props.dispatch(pageActions.pageLoginLoadUser(username, password, navigate));
+    const isLoggedIn = props.ui.get("loggedIn");
+    if (!isLoggedIn) {
+      props.dispatch(pageActions.pageLoginLoadUser(username, password, navigate));
+    }
+    else {
+      alert("欢迎！");
+      navigate('/home');
+    }
     event.preventDefault();
   }
 
   const handleLogout = () => {
-    window.localStorage.removeItem("token");
+    window.localStorage.removeItem("user");
     alert("欢迎下次再来！");
     navigate('/login');
   }
+  
+  // keep log in status
+  useEffect(() => {
+    const loggedIn = window.localStorage.getItem("UserId");
+    if (loggedIn) {
+      props.dispatch({type: actionType.login.loginLoadUserFulfilled, payload: loggedIn});
+    }
+  }, []);
 
   return (
     <div>
-    <form onSubmit={(event) => handleLogin(event, props.ui.get("error"))}>
+    <form onSubmit={(event) => handleLogin(event)}>
       <label>
         User Name:
         <input type="text" name="username" value={username} 

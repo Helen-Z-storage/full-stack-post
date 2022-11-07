@@ -8,10 +8,9 @@ import * as uiActions from "./redux/actions/uiActions";
 function NavigationBar(props) {
   const navigate = useNavigate();
   const handleLogout = () => {
-    window.localStorage.removeItem("token");
+    window.localStorage.removeItem("user");
     alert("欢迎下次再来！");
     navigate('/login');
-    props.dispatch(uiActions.setError(""));
   }
   return (
     <div>
