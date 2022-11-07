@@ -1,6 +1,9 @@
 //import './App.css';
 import { useNavigate} from 'react-router-dom';
 import React, { useState } from 'react';
+
+import { connect } from "react-redux";
+import * as uiActions from "./redux/actions/uiActions";
 const tagSpliter = ",";
 
 function UpdatePost(props) {
@@ -18,10 +21,12 @@ function UpdatePost(props) {
                         + " text: " + text
       );
       navigate('/home');
-      setError("");
+      
+      props.dispatch(uiActions.setError(""));
       event.preventDefault();
     } else {
-      setError("请输入至少一个更新内容！");
+      
+      props.dispatch(uiActions.setError("请输入至少一个更新内容！"));
     }
   }
 
@@ -45,10 +50,11 @@ function UpdatePost(props) {
       </label>
       <input type="submit" value="Submit" />
     </form>
-          <button key={1} onClick={() => {navigate('/home');setError("");}}>Back</button>
-          <div>{error}</div>
+          <button key={1} onClick={() => {navigate('/home');
+                props.dispatch(uiActions.setError(""));}}>Back</button>
+          <div>{props.ui.get("error")}</div>
     </div>
   );
 }
 
-export default UpdatePost;
+export default connect ((state) => {return {ui:state.ui}})(UpdatePost);

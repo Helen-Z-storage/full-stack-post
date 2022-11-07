@@ -8,9 +8,12 @@ import SearchPost from './searchPost';
 import UpdatePost from './updatePost';
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 
+import { connect } from "react-redux";
+import * as uiActions from "./redux/actions/uiActions";
+
 const localStorage = window.localStorage;
 // fetch posts Hook
-const useFetchPosts = () => {
+const useFetchPosts = (props) => {
   // State to store our value
   // Pass initial state function to useState so logic is only executed once
   const [prevState, setPrevState] = useState([]);
@@ -44,7 +47,7 @@ const useFetchPosts = () => {
           .then(res => res.json())
           .then(data => {
               if (data.error) {
-                  setError(data.error);
+                props.dispatch(uiActions.setError(data.error));
               } else {
 
                   // Save new posts in state and update new state for synchronize render
@@ -60,30 +63,24 @@ const useFetchPosts = () => {
       }
     };
 
-  return [post, setNewpost, error, setError];
+  return [post, setNewpost];
 }
 
-function App() {
-  const [posts, setPosts, error, setError] = useFetchPosts();
+function App(props) {
+  //const [posts, setPosts, error, setError] = useFetchPosts();
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={
-          <Login posts={posts} setPosts={setPosts} error={error} setError={setError}/>} />
-        <Route path="/register" element={
-          <Register error={error} setError={setError}/>} />
-        <Route path="/home" element={
-          <MainPage posts={posts} setPosts={setPosts} error={error} setError={setError}/>} />
-        <Route path="/add" element={
-          <AddPost posts={posts} setPosts={setPosts} error={error} setError={setError}/>} />
-        <Route path="/search" element={
-          <SearchPost error={error} setError={setError}/>} />
-        <Route path="/update" element={
-        <UpdatePost posts={posts} setPosts={setPosts} error={error} setError={setError}/>} />
+        <Route path="/login" element={<Login store={props}/>} />
+        <Route path="/register" element={<Register store={props}/>} />
+        <Route path="/home" element={<MainPage store={props}/>} />
+        <Route path="/add" element={<AddPost store={props}/>} />
+        <Route path="/search" element={<SearchPost store={props}/>} />
+        <Route path="/update" element={<UpdatePost store={props}/>} />
         <Route path="/" element={<Navigate to="/login" exact />}/>
       </Routes>
     </BrowserRouter>
   );
 }
 
-export default App;
+export default connect ((state) => {return {ui:state.ui}})(App);

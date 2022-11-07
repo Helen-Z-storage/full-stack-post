@@ -4,6 +4,9 @@ import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import NavigationBar from './navigationBar';
 
+import { connect } from "react-redux";
+import * as uiAction from "./redux/actions/uiActions";
+
 const tagSpliter = ",";
 const localStorage = window.localStorage;
 
@@ -51,7 +54,7 @@ function MainPage(props) {
     });
   return (
     <div>
-    <NavigationBar setError={setError}/>
+    <NavigationBar/>
     <table>
         <tbody>
             <tr>
@@ -60,7 +63,7 @@ function MainPage(props) {
             </tr>
             <tr>
                 <td>
-                    {error}
+                    {props.ui.get("error")}
                     <ul>
                         {postLst}
                     </ul>
@@ -72,4 +75,4 @@ function MainPage(props) {
   );
 }
 
-export default MainPage;
+export default connect ((state) => {return {ui:state.ui}})(MainPage);

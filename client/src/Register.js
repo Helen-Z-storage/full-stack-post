@@ -2,6 +2,9 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 
+import { connect } from "react-redux";
+import * as uiActions from "./redux/actions/uiActions";
+
 let localStorage = window.localStorage
 
 function Register(props) {
@@ -17,7 +20,7 @@ function Register(props) {
         users = JSON.parse(users);
         for (const user of users) {
             if (user.username === username) {
-              setError("已经注册此账户");
+              props.dispatch(uiActions.setError("已经注册此账户"));
                 return;
             }
         }
@@ -29,10 +32,10 @@ function Register(props) {
         localStorage.setItem("User", JSON.stringify(users));
       alert("成功注册");
       navigate('/login');
-      setError("");
+      props.dispatch(uiActions.setError(""));
       event.preventDefault();
     } else {
-      setError("请输入用户名和密码！");
+      props.dispatch(uiActions.setError("请输入用户名和密码！"));
     }
   }
 
@@ -51,13 +54,13 @@ function Register(props) {
       </label>
       <input type="submit" value="Submit" />
     </form>
-          <button key={1} onClick={() => {navigate('/login'); setError("");}}>Login</button>
-          <div>{error}</div>
+          <button key={1} onClick={() => {navigate('/login'); props.dispatch(uiActions.setError(""));}}>Login</button>
+          <div>{props.ui.get("error")}</div>
     </div>
   );
 }
 
-export default Register;
+export default connect ((state) => {return {ui:state.ui}})(Register);
 
 // citation, some code from
 // https://juejin.cn/post/6984667855115517988

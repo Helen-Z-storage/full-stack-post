@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
+import { Provider } from "react-redux";
+import store from "./redux/store/store";
 // adding data for pure frontend testing
 /*
 const SEED_PW = '123456';
@@ -67,7 +68,7 @@ localStorage.setItem("UserPost", JSON.stringify(userPosts));
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App></App>
+    <Provider store={store}> <App></App> </Provider>
   </React.StrictMode>
 );
 

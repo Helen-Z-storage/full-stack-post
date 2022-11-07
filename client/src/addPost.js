@@ -1,6 +1,8 @@
 //import './App.css';
 import { useNavigate} from 'react-router-dom';
 import React, { useState } from 'react';
+import { connect } from "react-redux";
+import * as uiActions from "./redux/actions/uiActions";
 
 function AddPost(props) {
   const {posts, setPosts, error, setError} = props;
@@ -13,10 +15,11 @@ function AddPost(props) {
       alert("成功add" + " tags: " + JSON.stringify(tags)
       + " text: " + text);
       navigate('/home');
-      setError("");
+      
+      props.dispatch(uiActions.setError(""));
       event.preventDefault();
     } else {
-      setError("请输入post的内容！");
+      props.dispatch(uiActions.setError("请输入post的内容！"));
     }
   }
 
@@ -35,10 +38,11 @@ function AddPost(props) {
       </label>
       <input type="submit" value="Submit" />
     </form>
-          <button key={1} onClick={() => {navigate('/home');setError("");}}>Back</button>
-          <div>{error}</div>
+          <button key={1} onClick={() => {navigate('/home');
+                props.dispatch(uiActions.setError(""));}}>Back</button>
+          <div>{props.ui.get("error")}</div>
     </div>
   );
 }
 
-export default AddPost;
+export default connect ((state) => {return {ui:state.ui}})(AddPost);
