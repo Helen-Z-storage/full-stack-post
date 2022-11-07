@@ -22,7 +22,6 @@ function Login(props) {
   const handleLogout = () => {
     window.localStorage.removeItem("token");
     alert("欢迎下次再来！");
-    props.dispatch(uiActions.setError(""));
     navigate('/login');
   }
 
