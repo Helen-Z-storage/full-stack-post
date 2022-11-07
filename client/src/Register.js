@@ -19,32 +19,7 @@ function Register(props) {
     props.dispatch(pageActions.pageRegisterLoadUser(username, password, navigate));
     event.preventDefault();
   }
-/*
-  const handleRegister = (event) => {
-    if (username && password) {
-        let users = localStorage.getItem("User");
-        users = JSON.parse(users);
-        for (const user of users) {
-            if (user.username === username) {
-              props.dispatch(uiActions.setError("已经注册此账户"));
-                return;
-            }
-        }
-        users.push({
-            id: users.length + 1,
-            username: username,
-            password: password
-        });
-        localStorage.setItem("User", JSON.stringify(users));
-      alert("成功注册");
-      navigate('/login');
-      props.dispatch(uiActions.setError(""));
-      event.preventDefault();
-    } else {
-      props.dispatch(uiActions.setError("请输入用户名和密码！"));
-    }
-  }
-*/
+  
   return (
     <div>
     <form onSubmit={(event) => handleRegister(event)}>
