@@ -1,5 +1,5 @@
 import { actionType } from "./actionType";
-import { get, post } from "../../utilities/fetch";
+import { get, post, patch } from "../../utilities/fetch";
 
 export const pageLoginLoadUser = (username, password, navigate) => {
     return (dispatch) => {
@@ -50,10 +50,24 @@ export const pageAddPosts = (postBody, token, navigate) => {
         dispatch({type: actionType.posts.postsLoadUserPending, payload: null});
         post("http://localhost:8080/api/posts", postBody, {'x-access-token': token})
         .then(res => {
-            console.log(res);
             dispatch({type: actionType.posts.postsLoadUserFulfilled, payload: [res.post]});
             navigate('/home');
             alert("成功增加");
+        })
+        .catch(error => {dispatch({type: actionType.posts.postsLoadUserRejected, payload: error.response.data.error})})
+    }
+}
+
+export const pageUpdatePosts = (postId, postBody, token, navigate) => {
+    return (dispatch) => {
+        console.log(postId, postBody);
+        alert(postId, postBody);
+        dispatch({type: actionType.posts.postsLoadUserPending, payload: null});
+        patch(`http://localhost:8080/api/posts/${postId}`, postBody, {'x-access-token': token})
+        .then(res => {
+            dispatch({type: actionType.posts.postsLoadUserFulfilled, payload: [res.post]});
+            //navigate('/home');
+            alert("成功更新");
         })
         .catch(error => {dispatch({type: actionType.posts.postsLoadUserRejected, payload: error.response.data.error})})
     }

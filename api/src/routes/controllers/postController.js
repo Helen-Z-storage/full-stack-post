@@ -56,6 +56,7 @@ class PostController {
   static async updatePost(req, res, next) {
     try {
       // authority Validation
+      console.log(req);
       if (!req.user || !req.user.id) {
         return ErrorHandler.codeError(res, 401, ErrorDic.unAuthorizedUser);
       }
