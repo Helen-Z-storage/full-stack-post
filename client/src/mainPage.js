@@ -55,10 +55,6 @@ function MainPage(props) {
         <tbody>
             <tr>
                 <td>
-                </td>
-            </tr>
-            <tr>
-                <td>
                     {error}
                     <ul>
                         {postLst}
