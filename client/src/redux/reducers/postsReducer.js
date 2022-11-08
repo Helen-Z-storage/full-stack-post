@@ -29,7 +29,7 @@ reducer.prototype[actionType.posts.postsLoadUserPending] = (state, action) => {
 reducer.prototype[actionType.posts.postsLoadUserRejected] = (state, action) => {
     return state.setIn("posts.loading".split("."), false)
                 .setIn("posts.loaded".split("."), false)
-                .setIn("posts.postsData".split("."), {})
+                .setIn("posts.postsData".split("."), [])
                 .setIn("posts.errorMsg".split("."), action.payload);
 }
 reducer.prototype[actionType.posts.postsLoadUserFulfilled] = (state, action) => {
