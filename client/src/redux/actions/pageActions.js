@@ -9,7 +9,7 @@ export const pageLoginLoadUser = (username, password, navigate) => {
             dispatch({type: actionType.login.loginLoadUserFulfilled, payload: res});
             alert("欢迎！");
             navigate('/home');
-            window.localStorage.setItem("user", res);
+            window.localStorage.setItem("user", JSON.stringify(res));
 
         })
         .catch(error => {dispatch({type: actionType.login.loginLoadUserRejected, payload: error.response.data.error})})
@@ -29,13 +29,13 @@ export const pageRegisterLoadUser = (username, password, navigate) => {
     }
 }
 
-export const pageSearchPosts = (postQuery) => {
+export const pageSearchPosts = (postQuery, token) => {
     return (dispatch) => {
+
         let url = new URL("http://localhost:8080/api/posts");
-        const token = window.localStorage.getItem("token");
-        for (const key of postQuery) {
-            url.searchParams.set(key, postQuery[key]);
-        }
+        console.log(postQuery);
+        console.log(postQuery["authorIds"]);
+        Object.keys(postQuery).forEach(key => url.searchParams.set(key, postQuery[key]));
 
         dispatch({type: actionType.posts.postsLoadUserPending, payload: null});
         get(url, {'x-access-token': token})
