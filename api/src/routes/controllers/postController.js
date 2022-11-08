@@ -45,6 +45,22 @@ class PostController {
     }
   }
 
+  static async fetchAllPosts(req, res, next) {
+    try {
+      // authority Validation
+      if (!req.user) {
+        return ErrorHandler.codeError(res, 401, ErrorDic.unAuthorizedUser);
+      }
+
+      const allPostList = await Post.findAll();
+      const allPost = allPostList.map((postObj) => postObj.dataValues);
+      
+      res.json({ posts: allPost });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   static async fetchPosts(req, res, next) {
     try {
 

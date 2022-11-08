@@ -13,6 +13,23 @@ const jwt = require('jsonwebtoken');
 
 
 class UserController {
+  
+  static async fetchAllUsers(req, res, next) {
+    try {
+      // authority Validation
+      if (!req.user) {
+        return ErrorHandler.codeError(res, 401, ErrorDic.unAuthorizedUser);
+      }
+
+      const allUserList = await User.findAll({attributes: ['id', 'username']});
+      const allUser = allUserList.map((postObj) => postObj.dataValues);
+      
+      res.json({ users: allUser });
+    } catch (error) {
+      next(error);
+    }
+  }
+
     static async addNewUser(req, res, next) {
         try {
           const { username, password } = req.body;

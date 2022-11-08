@@ -358,6 +358,43 @@ describe('GET /api/posts', () => {
   });
 });
 
+describe('GET /api/posts/allPosts', () => {
+  // a list of input author, sort by decrease reads, DNE duplicates
+  it('should return all posts in database', async () => {
+    const token = makeToken(2);
+    const res = await request(app)
+      .get('/api/posts/allPosts')
+      .set('x-access-token', token)
+      .query({})
+      .send();
+    expect(res.body).toEqual({posts: (await Post.findAll()).map((obj) => obj.dataValues)});
+    expect(res.status).toEqual(200);
+  });
+  
+  it('should return empty list for any post are not exist in database.', async () => {
+    // clear the Post table
+    Post.destroy({where: {}, truncate: true})
+    const token = makeToken(2);
+    const res = await request(app)
+      .get('/api/posts/allPosts')
+      .set('x-access-token', token)
+      .query({})
+      .send();
+    expect(res.body).toEqual({posts: []});
+    expect(res.status).toEqual(200);
+  });
+
+  // didn't logged in
+  it('fail for user not log in want to search on post from authorId', async () => {
+    const res = await request(app)
+      .get('/api/posts/allPosts')
+      .query({})
+      .send();
+    expect(res.body.error).toEqual("Didn't have logged in user");
+    expect(res.status).toEqual(401);
+  });
+});
+
 describe('PATCH /api/posts/:postId', () => {
   it('should only update tags and authorIds when only they are provided', async () => {
     const token = makeToken(2);

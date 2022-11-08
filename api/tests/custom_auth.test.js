@@ -2,6 +2,7 @@ const globals = require('@jest/globals');
 const request = require('supertest');
 const app = require('./../src/app');
 const { User } = require('./../src/db/models');
+const { makeToken } = require('./utils');
 
 const { describe, it, expect } = globals;
 
@@ -98,6 +99,43 @@ describe('POST /api/register', () => {
     expect(res.body.error).toEqual(
       'User with provided username already exists'
     );
+    expect(res.status).toEqual(401);
+  });
+});
+
+describe('GET /api/allUsers', () => {
+  // a list of input author, sort by decrease reads, DNE duplicates
+  it('should return all posts in database', async () => {
+    const token = makeToken(2);
+    const res = await request(app)
+      .get('/api/allUsers')
+      .set('x-access-token', token)
+      .query({})
+      .send();
+    expect(res.body).toEqual({users: (await User.findAll({attributes: ['id', 'username']})).map((obj) => obj.dataValues)});
+    expect(res.status).toEqual(200);
+  });
+  
+  it('fail for user not log in for any post are not exist in database.', async () => {
+    // clear the Post table
+    User.destroy({where: {}, truncate: true})
+    const token = makeToken(2);
+    const res = await request(app)
+      .get('/api/allUsers')
+      .set('x-access-token', token)
+      .query({})
+      .send();
+      expect(res.body.error).toEqual("Didn't have logged in user");
+      expect(res.status).toEqual(401);
+  });
+
+  // didn't logged in
+  it('fail for user not log in want to search on post from authorId', async () => {
+    const res = await request(app)
+      .get('/api/allUsers')
+      .query({})
+      .send();
+    expect(res.body.error).toEqual("Didn't have logged in user");
     expect(res.status).toEqual(401);
   });
 });

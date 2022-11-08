@@ -7,6 +7,7 @@ const { PostController } = require('./controllers');
  */
 router.post('/', PostController.addPosts);
 router.get('/', PostController.fetchPosts);
+router.get('/allPosts', PostController.fetchAllPosts);
 router.patch('/:postId', PostController.updatePost);
 
 module.exports = router;
