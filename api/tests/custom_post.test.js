@@ -391,6 +391,36 @@ describe('PATCH /api/posts/:postId', () => {
         });
     });
 
+
+  it('should not update anythin when nothing provided', async () => {
+    const token = makeToken(2);
+    const postId = 3;
+    const res = await request(app)
+      .patch(`/api/posts/${postId}`)
+      .set('x-access-token', token)
+      .send({});
+      expect(res.body).toEqual({
+        post: {
+          authorIds: [2, 3],
+          id: 3,
+          likes: 10,
+          popularity: 0.7,
+          reads: 32,
+          tags: ['travel', "airbnb", "vacation"],
+          text: 'Voluptate consequat minim commodo nisi minim ut. Exercitation incididunt eiusmod qui duis enim sunt dolor sit nisi laboris qui enim mollit. Proident pariatur elit est elit consectetur. Velit anim eu culpa adipisicing esse consequat magna. Id do aliquip pariatur laboris consequat cupidatat voluptate incididunt sint ea.',
+        },
+      });      
+      expect((await UserPost.getUserIdsByPost(3)).map((obj) => obj.dataValues.userId).sort()).toEqual([2, 3]);
+      expect((await Post.getPostById(3)).dataValues).toEqual({
+            id: 3,
+            likes: 10,
+            popularity: 0.7,
+            reads: 32,
+            tags: 'travel,airbnb,vacation',
+            text: 'Voluptate consequat minim commodo nisi minim ut. Exercitation incididunt eiusmod qui duis enim sunt dolor sit nisi laboris qui enim mollit. Proident pariatur elit est elit consectetur. Velit anim eu culpa adipisicing esse consequat magna. Id do aliquip pariatur laboris consequat cupidatat voluptate incididunt sint ea.',
+          });
+    });
+
   // fail for user not log in
   it('fail for user not log in want to update post', async () => {
     const postId = 3;

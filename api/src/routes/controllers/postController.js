@@ -7,9 +7,43 @@ const {
 } = require('./../utilities');
 const MainDic = require('./../mainDic');
 const ErrorDic = require('./../errorDic');
-const { Post } = require('./../../db/models');
+const { Post, UserPost } = require('./../../db/models');
 
 class PostController {
+  static async addPosts(req, res, next) {
+    try {
+      // Validation
+      if (!req.user) {
+        return res.sendStatus(401);
+      }
+
+      const { text, tags } = req.body;
+      console.log(req.body);
+
+      if (!text) {
+        return ErrorHandler.codeError(res, 400, ErrorDic.newPostText);
+      }
+
+      // Create new post
+      const values = {
+        text,
+      };
+      if (tags) {
+        values.tags = tags.join(MainDic.tagSpliter);
+      } else {
+        values.tags = '';
+      }
+      const post = await Post.create(values);
+      await UserPost.create({
+        userId: req.user.id,
+        postId: post.id,
+      });
+
+      res.json({ post });
+    } catch (error) {
+      next(error);
+    }
+  }
 
   static async fetchPosts(req, res, next) {
     try {
@@ -56,12 +90,12 @@ class PostController {
   static async updatePost(req, res, next) {
     try {
       // authority Validation
-      console.log(req);
       if (!req.user || !req.user.id) {
         return ErrorHandler.codeError(res, 401, ErrorDic.unAuthorizedUser);
       }
       
       let { authorIds, tags, text } = req.body;
+      
 
       // check validation
       const postId = req.params.postId;

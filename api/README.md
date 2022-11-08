@@ -68,8 +68,6 @@ curl --location --request POST 'localhost:8080/api/posts' \
 
 
 # Self find Common Setup Errors
-\node_modules\bcrypt\lib\binding\napi-v3\bcrypt_lib.node is not a valid Win32 application.
-- delete \node_modules\bcrypt folder and run "npm install bcrypt"
 
 Error: Please install sqlite3 package manually
-- delete \node_modules\bcrypt folder and run " npm rebuild"
+- run " npm rebuild"
