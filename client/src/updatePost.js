@@ -22,16 +22,16 @@ function UpdatePost(props) {
     const { token } = JSON.parse(user);
 
     let postBody = {}
-    if (authorIds) {
+    if (authorIds.length) {
       postBody.authorIds = authorIds;
     }
-    if (tags) {
+    if (tags.length) {
       postBody.tags = tags;
     }
     if (text) {
       postBody.text = text;
     }
-
+    console.log(postBody);
     props.dispatch(pageActions.pageUpdatePosts(postId, postBody, token, navigate));
     event.preventDefault();
   }
