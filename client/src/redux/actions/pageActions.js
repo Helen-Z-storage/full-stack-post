@@ -33,8 +33,6 @@ export const pageSearchPosts = (postQuery, token) => {
     return (dispatch) => {
 
         let url = new URL("http://localhost:8080/api/posts");
-        console.log(postQuery);
-        console.log(postQuery["authorIds"]);
         Object.keys(postQuery).forEach(key => url.searchParams.set(key, postQuery[key]));
 
         dispatch({type: actionType.posts.postsLoadUserPending, payload: null});
@@ -42,6 +40,20 @@ export const pageSearchPosts = (postQuery, token) => {
         .then(res => {
             dispatch({type: actionType.posts.postsLoadUserFulfilled, payload: res.posts});
             alert("成功查找！");
+        })
+        .catch(error => {dispatch({type: actionType.posts.postsLoadUserRejected, payload: error.response.data.error})})
+    }
+}
+
+export const pageAddPosts = (postBody, token, navigate) => {
+    return (dispatch) => {
+        dispatch({type: actionType.posts.postsLoadUserPending, payload: null});
+        post("http://localhost:8080/api/posts", postBody, {'x-access-token': token})
+        .then(res => {
+            console.log(res);
+            dispatch({type: actionType.posts.postsLoadUserFulfilled, payload: [res.post]});
+            navigate('/home');
+            alert("成功增加");
         })
         .catch(error => {dispatch({type: actionType.posts.postsLoadUserRejected, payload: error.response.data.error})})
     }

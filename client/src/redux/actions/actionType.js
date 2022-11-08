@@ -18,5 +18,5 @@ export const actionType = {
         postsLoadUserPending:  `POSTS_LOADUSER${ActionType.Pending}`,
         postsLoadUserFulfilled:`POSTS_LOADUSER${ActionType.Fulfilled}`,
         postsLoadUserRejected: `POSTS_LOADUSER${ActionType.Rejected}`
-    }
+    },
 }

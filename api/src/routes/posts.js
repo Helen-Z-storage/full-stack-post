@@ -18,6 +18,7 @@ router.post('/', async (req, res, next) => {
       }
 
       const { text, tags } = req.body;
+      console.log(req.body);
 
       if (!text) {
         return ErrorHandler.codeError(res, 400, ErrorDic.newPostText);

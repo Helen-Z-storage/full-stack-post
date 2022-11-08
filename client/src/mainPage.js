@@ -16,8 +16,8 @@ function MainPage(props) {
 
     useEffect(() => {
         // componentWillMount
-    const user = window.localStorage.getItem("user");
-    const { id, token } = JSON.parse(user);
+        const user = window.localStorage.getItem("user");
+        const { id, token } = JSON.parse(user);
         props.dispatch(pageActions.pageSearchPosts({authorIds: id}, token));
         // return () => {// componmentWillUnmount}
     }, []);

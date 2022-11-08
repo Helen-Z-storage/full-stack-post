@@ -17,14 +17,7 @@ function Login(props) {
 
 
   const handleLogin = (event) => {
-    const isLoggedIn = props.ui.get("loggedIn");
-    if (!isLoggedIn) {
-      props.dispatch(pageActions.pageLoginLoadUser(username, password, navigate));
-    }
-    else {
-      alert("欢迎！");
-      navigate('/home');
-    }
+    props.dispatch(pageActions.pageLoginLoadUser(username, password, navigate));
     event.preventDefault();
   }
 
