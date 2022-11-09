@@ -1,6 +1,6 @@
 //import './App.css';
 import { useNavigate} from 'react-router-dom';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { connect } from "react-redux";
 import * as uiActions from "./redux/actions/uiActions";
@@ -37,6 +37,14 @@ function UpdatePost(props) {
     props.dispatch(pageActions.pageUpdatePosts(postId, postBody, token, navigate));
     event.preventDefault();
   }
+
+  useEffect(() => {
+    // componentWillMount
+    props.dispatch(uiActions.setAuthorIds(""));
+    props.dispatch(uiActions.setText(""));
+    props.dispatch(uiActions.setTags([]));
+    // return () => {// componmentWillUnmount}
+}, []);
 
   return (
     <div>

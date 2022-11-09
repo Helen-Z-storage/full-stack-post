@@ -22,7 +22,6 @@ function App(props) {
     }
   }, []);
 
-  //const [posts, setPosts, error, setError] = useFetchPosts();
   return (
     <BrowserRouter>
       <Routes>

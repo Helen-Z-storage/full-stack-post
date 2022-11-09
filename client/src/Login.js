@@ -1,6 +1,6 @@
 //import './App.css';
 import { useNavigate } from 'react-router-dom';
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useJwt } from "react-jwt";
 
 import { connect } from "react-redux";
@@ -26,6 +26,13 @@ function Login(props) {
     alert("欢迎下次再来！");
     navigate('/login');
   }
+
+  useEffect(() => {
+      // componentWillMount
+      props.dispatch(uiActions.setUsername(""));
+      props.dispatch(uiActions.setPassword(""));
+      // return () => {// componmentWillUnmount}
+  }, []);
 
   return (
     <div>

@@ -1,6 +1,6 @@
 //import './App.css';
 import { useNavigate} from 'react-router-dom';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { connect } from "react-redux";
 import * as uiActions from "./redux/actions/uiActions";
@@ -19,6 +19,14 @@ function AddPost(props) {
     props.dispatch(pageActions.pageAddPosts({text: text, tags: tags}, token, navigate));
     event.preventDefault();
   }
+  
+  useEffect(() => {
+    // componentWillMount
+    props.dispatch(uiActions.setText(""));
+    props.dispatch(uiActions.setTags([]));
+    // return () => {// componmentWillUnmount}
+}, []);
+
 
   return (
     <div>

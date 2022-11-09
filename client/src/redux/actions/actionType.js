@@ -1,7 +1,6 @@
 import { ActionType } from "redux-promise-middleware";
 export const actionType = {
     ui: {
-        setError:     "UI_SETERROR",
         setToken:     "UI_SETTOKEN",
         setPostId:    "UI_SETPOSTID",
 

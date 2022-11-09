@@ -1,6 +1,6 @@
 //import './App.css';
-import { useNavigate} from 'react-router-dom';
-import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
 import { connect } from "react-redux";
 import { v4 as uuidv4 } from 'uuid';
 import * as uiActions from "./redux/actions/uiActions";
@@ -20,7 +20,7 @@ function SearchPost(props) {
   const handleSearching = (event) => {
     const token = props.ui.get("token");
 
-    let postQuery = {authorIds: authorIds}
+    let postQuery = {authorIds: authorIds.split(tagSpliter).filter(Boolean).map(id => parseInt(id, 10))}
     if (sortBy) {
       postQuery.sortBy = sortBy;
     }
@@ -31,7 +31,6 @@ function SearchPost(props) {
     props.dispatch(pageActions.pageSearchPosts(postQuery, token));
     event.preventDefault();
   }
-
   
   let postLst = <div></div>
 
@@ -60,13 +59,21 @@ function SearchPost(props) {
       </li>);
   });
 
+  useEffect(() => {
+    // componentWillMount
+    props.dispatch(uiActions.setAuthorIds(""));
+    props.dispatch(uiActions.setSortBy(""));
+    props.dispatch(uiActions.setDirection(""));
+    // return () => {// componmentWillUnmount}
+}, []);
+
   return (
     <div>
     <form onSubmit={(event) => handleSearching(event)}>
       <label>
         Author Ids split by ",", required:
         <input type="text" name="AuthorIds" value={authorIds} 
-            onChange={(event) => props.dispatch(uiActions.setAuthorIds(event.target.value.split(tagSpliter)))}/>
+            onChange={(event) => props.dispatch(uiActions.setAuthorIds(event.target.value))}/>
       </label>
       <label>
         Sort by, optional, default "id", choose from "id", "reads", "likes", "popularity":
