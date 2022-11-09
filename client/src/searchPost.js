@@ -1,6 +1,6 @@
 //import './App.css';
 import { useNavigate} from 'react-router-dom';
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from "react-redux";
 import { v4 as uuidv4 } from 'uuid';
 import * as uiActions from "./redux/actions/uiActions";
@@ -9,18 +9,16 @@ import * as pageActions from "./redux/actions/pageActions";
 const tagSpliter = ",";
 
 function SearchPost(props) {
-  let error = props.posts.getIn("posts.errorMsg".split("."));
-
+  const error = props.posts.getIn("posts.errorMsg".split("."));
   const posts = props.posts.getIn("posts.postsData".split("."));
 
-  const [authorIds, setAuthorIds] = useState("");
-  const [sortBy, setSortBy] = useState("");
-  const [direction, setDirection] = useState("");
+  const authorIds = props.ui.get("authorIds");
+  const sortBy = props.ui.get("sortBy");
+  const direction = props.ui.get("direction");
   const navigate = useNavigate();
   
   const handleSearching = (event) => {
-    const user = window.localStorage.getItem("user");
-    const { token } = JSON.parse(user);
+    const token = props.ui.get("token");
 
     let postQuery = {authorIds: authorIds}
     if (sortBy) {
@@ -68,17 +66,17 @@ function SearchPost(props) {
       <label>
         Author Ids split by ",", required:
         <input type="text" name="AuthorIds" value={authorIds} 
-            onChange={(event) => setAuthorIds(event.target.value)}/>
+            onChange={(event) => props.dispatch(uiActions.setAuthorIds(event.target.value.split(tagSpliter)))}/>
       </label>
       <label>
         Sort by, optional, default "id", choose from "id", "reads", "likes", "popularity":
         <input type="text" name="SortBy" value={sortBy} 
-            onChange={(event) => setSortBy(event.target.value)}/>
+            onChange={(event) => props.dispatch(uiActions.setSortBy(event.target.value))}/>
       </label>
       <label>
         Direction, optional, default "asc", choose from "asc", "desc":
         <input type="text" name="Direction" value={direction} 
-            onChange={(event) => setDirection(event.target.value)}/>
+            onChange={(event) => props.dispatch(uiActions.setDirection(event.target.value))}/>
       </label>
       <input type="submit" value="Submit" />
     </form>

@@ -1,5 +1,6 @@
 import { actionType } from "./actionType";
 import { get, post, patch } from "../../utilities/fetch";
+import * as uiActions from "./uiActions";
 
 export const pageLoginLoadUser = (username, password, navigate) => {
     return (dispatch) => {
@@ -9,8 +10,8 @@ export const pageLoginLoadUser = (username, password, navigate) => {
             dispatch({type: actionType.login.loginLoadUserFulfilled, payload: res});
             alert("欢迎！");
             navigate('/home');
-            window.localStorage.setItem("user", JSON.stringify(res));
-
+            dispatch(uiActions.setToken(res.token));
+            window.localStorage.setItem("token", res.token);
         })
         .catch(error => {dispatch({type: actionType.login.loginLoadUserRejected, payload: error.response.data.error})})
     }
@@ -26,6 +27,18 @@ export const pageRegisterLoadUser = (username, password, navigate) => {
             navigate('/login');
         })
         .catch(error => {dispatch({type: actionType.register.registerLoadUserRejected, payload: error.response.data.error})})
+    }
+}
+
+export const pageSearchAllPosts = (token) => {
+    return (dispatch) => {
+        dispatch({type: actionType.posts.postsLoadUserPending, payload: null});
+        get("http://localhost:8080/api/posts/allPosts", {'x-access-token': token})
+        .then(res => {
+            dispatch({type: actionType.posts.postsLoadUserFulfilled, payload: res.posts});
+            alert("成功查找！");
+        })
+        .catch(error => {dispatch({type: actionType.posts.postsLoadUserRejected, payload: error.response.data.error})})
     }
 }
 

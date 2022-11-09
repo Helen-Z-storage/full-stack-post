@@ -1,17 +1,15 @@
 //import './App.css';
 import { useNavigate } from 'react-router-dom';
-import React, { useState } from 'react';
+import React from 'react';
 
 import { connect } from "react-redux";
 import * as uiActions from "./redux/actions/uiActions";
 import * as pageActions from "./redux/actions/pageActions";
 
-let localStorage = window.localStorage
-
 function Register(props) {
   let error = props.register.getIn("register.errorMsg".split("."));
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const username = props.ui.get("username");
+  const password = props.ui.get("password");
   
   const navigate = useNavigate();
   
@@ -26,12 +24,12 @@ function Register(props) {
       <label>
         User Name:
         <input type="text" name="username" value={username} 
-            onChange={(event) => setUsername(event.target.value)}/>
+            onChange={(event) => props.dispatch(uiActions.setUsername(event.target.value))}/>
       </label>
       <label>
         Password:
         <input type="text" name="password" value={password} 
-            onChange={(event) => setPassword(event.target.value)}/>
+            onChange={(event) => props.dispatch(uiActions.setPassword(event.target.value))}/>
       </label>
       <input type="submit" value="Submit" />
     </form>

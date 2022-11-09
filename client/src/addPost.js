@@ -1,6 +1,6 @@
 //import './App.css';
 import { useNavigate} from 'react-router-dom';
-import React, { useState } from 'react';
+import React from 'react';
 
 import { connect } from "react-redux";
 import * as uiActions from "./redux/actions/uiActions";
@@ -9,13 +9,12 @@ import * as pageActions from "./redux/actions/pageActions";
 
 function AddPost(props) {
   let error = props.posts.getIn("posts.errorMsg".split("."));
-  const [text, setText] = useState("");
-  const [tags, setTags] = useState([]);
+  const text = props.ui.get("text");
+  const tags = props.ui.get("tags");
   const navigate = useNavigate();
   
   const handleAdding = (event) => {
-    const user = window.localStorage.getItem("user");
-    const { token } = JSON.parse(user);
+    const token = props.ui.get("token");
 
     props.dispatch(pageActions.pageAddPosts({text: text, tags: tags}, token, navigate));
     event.preventDefault();
@@ -27,12 +26,12 @@ function AddPost(props) {
       <label>
         Post Text, required:
         <input type="text" name="Text" value={text} 
-            onChange={(event) => setText(event.target.value)}/>
+            onChange={(event) => props.dispatch(uiActions.setText(event.target.value))}/>
       </label>
       <label>
         Post Tags split by ",", optional:
-        <input type="text" name="Tags" value={tags} 
-            onChange={(event) => setTags(event.target.value.split(","))}/>
+        <input type="text" name="Tags" value={tags.join()} 
+            onChange={(event) => props.dispatch(uiActions.setTags(event.target.value.split(",")))}/>
       </label>
       <input type="submit" value="Submit" />
     </form>

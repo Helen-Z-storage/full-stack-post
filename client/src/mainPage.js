@@ -1,24 +1,35 @@
 //import './App.css';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import NavigationBar from './navigationBar';
+import {useNavigate} from 'react-router-dom';
 
 import { connect } from "react-redux";
+import * as uiActions from "./redux/actions/uiActions";
 import * as pageActions from "./redux/actions/pageActions";
 
 const tagSpliter = ",";
-const localStorage = window.localStorage;
 
 function MainPage(props) {
     let error = props.posts.getIn("posts.errorMsg".split("."));
-
     const posts = props.posts.getIn("posts.postsData".split("."));
+    const navigate = useNavigate();
+    
+    const handleClick = (postId) => {
+        props.dispatch(uiActions.setPostId(postId));
+        navigate('/update');
+    }
 
     useEffect(() => {
         // componentWillMount
-        const user = window.localStorage.getItem("user");
-        const { id, token } = JSON.parse(user);
-        props.dispatch(pageActions.pageSearchPosts({authorIds: id}, token));
+        const token = window.localStorage.getItem("token");
+        if (token) {
+            props.dispatch(uiActions.setToken(token));
+        } else {
+            navigate('/login');
+            alert("需要登录");
+        }
+        props.dispatch(pageActions.pageSearchAllPosts(token));
         // return () => {// componmentWillUnmount}
     }, []);
 
@@ -27,7 +38,7 @@ function MainPage(props) {
     postLst = posts.map((post) => {
         return (
         <li key={uuidv4()}>
-            <table>
+            <table onClick={() => handleClick(post.id)}>
                 <tbody>
                     <tr>
                         <td colSpan="3">

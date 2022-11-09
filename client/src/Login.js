@@ -1,6 +1,6 @@
 //import './App.css';
 import { useNavigate } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useJwt } from "react-jwt";
 
 import { connect } from "react-redux";
@@ -10,9 +10,9 @@ import { actionType } from "./redux/actions/actionType";
 
 function Login(props) {
   let error = props.login.getIn("login.errorMsg".split("."));
-  
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+
+  const username = props.ui.get("username");
+  const password = props.ui.get("password");
   const navigate = useNavigate();
 
 
@@ -22,18 +22,10 @@ function Login(props) {
   }
 
   const handleLogout = () => {
-    window.localStorage.removeItem("user");
+    props.dispatch(uiActions.setToken(""));
     alert("欢迎下次再来！");
     navigate('/login');
   }
-  
-  // keep log in status
-  useEffect(() => {
-    const loggedIn = window.localStorage.getItem("UserId");
-    if (loggedIn) {
-      props.dispatch({type: actionType.login.loginLoadUserFulfilled, payload: loggedIn});
-    }
-  }, []);
 
   return (
     <div>
@@ -41,12 +33,12 @@ function Login(props) {
       <label>
         User Name:
         <input type="text" name="username" value={username} 
-            onChange={(event) => setUsername(event.target.value)}/>
+            onChange={(event) => props.dispatch(uiActions.setUsername(event.target.value))}/>
       </label>
       <label>
         Password:
         <input type="text" name="password" value={password} 
-            onChange={(event) => setPassword(event.target.value)}/>
+            onChange={(event) => props.dispatch(uiActions.setPassword(event.target.value))}/>
       </label>
       <input type="submit" value="Submit" />
     </form>

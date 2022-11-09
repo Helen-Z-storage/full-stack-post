@@ -1,8 +1,18 @@
 import { ActionType } from "redux-promise-middleware";
 export const actionType = {
     ui: {
-        setError:    "UI_SETERROR",
-        setLoggedIn: "UI_SETLOGGEDIN"
+        setError:     "UI_SETERROR",
+        setToken:     "UI_SETTOKEN",
+        setPostId:    "UI_SETPOSTID",
+
+        setUsername:  "UI_SETUSERNAME",
+        setPassword:  "UI_SETPASSWORD",
+
+        setAuthorIds: "UI_SETAUTHORIDS",
+        setSortBy:    "UI_SETSORTBY",
+        setDirection: "UI_DIRECTION",
+        setText:      "UI_SETTEXT",
+        setTags:      "UI_SETTAGS"
     },
     login: {
         loginLoadUserPending:  `LOGIN_LOADUSER${ActionType.Pending}`,
