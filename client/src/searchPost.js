@@ -5,11 +5,13 @@ import { connect } from "react-redux";
 import { v4 as uuidv4 } from 'uuid';
 import * as uiActions from "./redux/actions/uiActions";
 import * as pageActions from "./redux/actions/pageActions";
+import { Dropdown } from 'semantic-ui-react';
 
 const tagSpliter = ",";
 
 function SearchPost(props) {
   const error = props.posts.getIn("posts.errorMsg".split("."));
+  const users = props.users.getIn("users.usersData".split("."));
   const posts = props.posts.getIn("posts.postsData".split("."));
 
   const authorIds = props.ui.get("authorIds");
@@ -20,7 +22,7 @@ function SearchPost(props) {
   const handleSearching = (event) => {
     const token = props.ui.get("token");
 
-    let postQuery = {authorIds: authorIds.split(tagSpliter).filter(Boolean).map(id => parseInt(id, 10))}
+    let postQuery = {authorIds: authorIds}
     if (sortBy) {
       postQuery.sortBy = sortBy;
     }
@@ -64,17 +66,19 @@ function SearchPost(props) {
     props.dispatch(uiActions.setAuthorIds(""));
     props.dispatch(uiActions.setSortBy(""));
     props.dispatch(uiActions.setDirection(""));
+    if (!users.length) {
+      const token = window.localStorage.getItem("token");
+      props.dispatch(pageActions.pageSearchAllUsers(token));
+    }
     // return () => {// componmentWillUnmount}
-}, []);
+  }, []);
 
   return (
     <div>
     <form onSubmit={(event) => handleSearching(event)}>
-      <label>
-        Author Ids split by ",", required:
-        <input type="text" name="AuthorIds" value={authorIds} 
-            onChange={(event) => props.dispatch(uiActions.setAuthorIds(event.target.value))}/>
-      </label>
+    <Dropdown placeholder='Author Ids' fluid multiple selection clearable 
+        options={users.length ? users.map((user, i) => ({key: i, text: user.username, value: user.id})) : []} 
+        onChange={(_, data) => props.dispatch(uiActions.setAuthorIds(data.value))}/>
       <label>
         Sort by, optional, default "id", choose from "id", "reads", "likes", "popularity":
         <input type="text" name="SortBy" value={sortBy} 
@@ -108,6 +112,7 @@ export default connect (
   (state) => {
     return {
       ui: state.ui,
-      posts: state.posts
+      posts: state.posts,
+      users: state.users
     }
   })(SearchPost);

@@ -10,7 +10,7 @@ const initialState = () => {
             username:  "",
             password:  "",
 
-            authorIds: "",
+            authorIds: [],
             sortBy:    "",
             direction: "",
             text:      "",

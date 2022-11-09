@@ -1,6 +1,7 @@
 //import './App.css';
 import { useNavigate} from 'react-router-dom';
 import React, { useEffect } from 'react';
+import { Dropdown } from 'semantic-ui-react';
 
 import { connect } from "react-redux";
 import * as uiActions from "./redux/actions/uiActions";
@@ -9,10 +10,8 @@ import { post } from './utilities/fetch';
 const tagSpliter = ",";
 
 function UpdatePost(props) {
-    
-  let error = props.posts.getIn("posts.errorMsg".split("."));
-
-  
+  const error = props.posts.getIn("posts.errorMsg".split("."));
+  const users = props.users.getIn("users.usersData".split("."));
   const authorIds = props.ui.get("authorIds");
   const tags = props.ui.get("tags");
   const text = props.ui.get("text");
@@ -25,7 +24,7 @@ function UpdatePost(props) {
 
     let postBody = {}
     if (authorIds.length) {
-      postBody.authorIds = authorIds.split(",").filter(Boolean).map(id => parseInt(id, 10));
+      postBody.authorIds = authorIds;
     }
     if (tags.length) {
       postBody.tags = tags;
@@ -43,17 +42,21 @@ function UpdatePost(props) {
     props.dispatch(uiActions.setAuthorIds(""));
     props.dispatch(uiActions.setText(""));
     props.dispatch(uiActions.setTags([]));
+    if (!users.length) {
+      const token = window.localStorage.getItem("token");
+      props.dispatch(pageActions.pageSearchAllUsers(token));
+    }
     // return () => {// componmentWillUnmount}
-}, []);
+  }, []);
+
+  const options = users.map((user, i) => ({key: i, text: user.username, value: user.id}));
 
   return (
     <div>
     <form onSubmit={(event) => handleUpdating(event)}>
-      <label>
-        Author Ids split by ",", optional:
-        <input type="text" name="AuthorIds" value={authorIds} 
-            onChange={(event) => props.dispatch(uiActions.setAuthorIds(event.target.value))}/>
-      </label>
+    <Dropdown placeholder='Author Ids' fluid multiple selection clearable
+        options={users.length ? users.map((user, i) => ({key: i, text: user.username, value: user.id})) : []} 
+        onChange={(_, data) => props.dispatch(uiActions.setAuthorIds(data.value))}/>
       <label>
         Post Text, optional:
         <input type="text" name="Text" value={text} 
@@ -77,6 +80,7 @@ export default connect (
   (state) => {
     return {
       ui: state.ui,
-      posts: state.posts
+      posts: state.posts,
+      users: state.users
     }
   })(UpdatePost);

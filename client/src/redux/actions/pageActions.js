@@ -30,13 +30,23 @@ export const pageRegisterLoadUser = (username, password, navigate) => {
     }
 }
 
+export const pageSearchAllUsers = (token) => {
+    return (dispatch) => {
+        dispatch({type: actionType.users.usersLoadUserPending, payload: null});
+        get("http://localhost:8080/api/allUsers", {'x-access-token': token})
+        .then(res => {
+            dispatch({type: actionType.users.usersLoadUserFulfilled, payload: res.users});
+        })
+        .catch(error => {dispatch({type: actionType.users.usersLoadUserRejected, payload: error.response.data.error})})
+    }
+}
+
 export const pageSearchAllPosts = (token) => {
     return (dispatch) => {
         dispatch({type: actionType.posts.postsLoadUserPending, payload: null});
         get("http://localhost:8080/api/posts/allPosts", {'x-access-token': token})
         .then(res => {
             dispatch({type: actionType.posts.postsLoadUserFulfilled, payload: res.posts});
-            alert("成功查找！");
         })
         .catch(error => {dispatch({type: actionType.posts.postsLoadUserRejected, payload: error.response.data.error})})
     }
