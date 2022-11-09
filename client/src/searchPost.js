@@ -8,6 +8,11 @@ import * as pageActions from "./redux/actions/pageActions";
 import { Dropdown } from 'semantic-ui-react';
 
 const tagSpliter = ",";
+const defaultSortByList = ["id", "reads", "likes", "popularity"];
+const sortByOptions = defaultSortByList.map((sortBy, i) => ({key: i, text: sortBy, value: sortBy}));
+
+const defaultDirectionList = ["asc", "desc"];
+const directionOptions = defaultDirectionList.map((sortBy, i) => ({key: i, text: sortBy, value: sortBy}));
 
 function SearchPost(props) {
   const error = props.posts.getIn("posts.errorMsg".split("."));
@@ -76,19 +81,24 @@ function SearchPost(props) {
   return (
     <div>
     <form onSubmit={(event) => handleSearching(event)}>
-    <Dropdown placeholder='Author Ids' fluid multiple selection clearable 
-        options={users.length ? users.map((user, i) => ({key: i, text: user.username, value: user.id})) : []} 
-        onChange={(_, data) => props.dispatch(uiActions.setAuthorIds(data.value))}/>
-      <label>
-        Sort by, optional, default "id", choose from "id", "reads", "likes", "popularity":
-        <input type="text" name="SortBy" value={sortBy} 
-            onChange={(event) => props.dispatch(uiActions.setSortBy(event.target.value))}/>
-      </label>
-      <label>
-        Direction, optional, default "asc", choose from "asc", "desc":
-        <input type="text" name="Direction" value={direction} 
-            onChange={(event) => props.dispatch(uiActions.setDirection(event.target.value))}/>
-      </label>
+      <Dropdown placeholder='Select Author Ids' fluid multiple selection clearable 
+          options={users.length ? users.map((user, i) => ({key: i, text: user.username, value: user.id})) : []} 
+          onChange={(_, data) => props.dispatch(uiActions.setAuthorIds(data.value))}/>
+      
+      <Dropdown
+        placeholder='Select Sort by'
+        fluid
+        selection
+        options={sortByOptions}
+        onChange={(_, data) => props.dispatch(uiActions.setSortBy(data.value))}/>
+
+      <Dropdown
+          placeholder='Select Direction'
+          fluid
+          selection
+          options={directionOptions}
+          onChange={(_, data) => props.dispatch(uiActions.setDirection(data.value))}/>
+
       <input type="submit" value="Submit" />
     </form>
           <button key={1} onClick={() => navigate('/home')}>Back</button>
