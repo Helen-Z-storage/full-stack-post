@@ -7,11 +7,12 @@ export const actionType = {
         setUsername:  "UI_SETUSERNAME",
         setPassword:  "UI_SETPASSWORD",
 
-        setAuthorIds: "UI_SETAUTHORIDS",
-        setSortBy:    "UI_SETSORTBY",
-        setDirection: "UI_DIRECTION",
-        setText:      "UI_SETTEXT",
-        setTags:      "UI_SETTAGS"
+        setAuthorIds:  "UI_SETAUTHORIDS",
+        setSortBy:     "UI_SETSORTBY",
+        setDirection:  "UI_DIRECTION",
+        setText:       "UI_SETTEXT",
+        setTags:       "UI_SETTAGS",
+        setTagOptions: "UI_SETTAGOPTIONS"
     },
     login: {
         loginLoadUserPending:  `LOGIN_LOADUSER${ActionType.Pending}`,

@@ -52,9 +52,17 @@ export const setText = (text) => {
         payload: text
     }
 }
+
 export const setTags = (tags) => {
     return {
         type: actionType.ui.setTags,
         payload: tags
+    }
+}
+
+export const setTagOptions = (tagOptions) => {
+    return {
+        type: actionType.ui.setTagOptions,
+        payload: tagOptions
     }
 }

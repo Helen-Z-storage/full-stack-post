@@ -16,7 +16,6 @@ function App(props) {
   
   // keep log in status
   useEffect(() => {
-    token = window.localStorage.getItem("token");
     if (token) {
       props.dispatch(uiActions.setToken(token));
     }

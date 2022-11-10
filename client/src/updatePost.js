@@ -6,7 +6,6 @@ import { Dropdown } from 'semantic-ui-react';
 import { connect } from "react-redux";
 import * as uiActions from "./redux/actions/uiActions";
 import * as pageActions from "./redux/actions/pageActions";
-import { post } from './utilities/fetch';
 const tagSpliter = ",";
 
 function UpdatePost(props) {
@@ -14,9 +13,9 @@ function UpdatePost(props) {
   const users = props.users.getIn("users.usersData".split("."));
   const authorIds = props.ui.get("authorIds");
   const tags = props.ui.get("tags");
+  const tagOptions = props.ui.get("tagOptions");
   const text = props.ui.get("text");
   const navigate = useNavigate();
-
   
   const handleUpdating = (event) => {
     const token = props.ui.get("token");
@@ -49,24 +48,30 @@ function UpdatePost(props) {
     // return () => {// componmentWillUnmount}
   }, []);
 
-  const options = users.map((user, i) => ({key: i, text: user.username, value: user.id}));
-
   return (
     <div>
     <form onSubmit={(event) => handleUpdating(event)}>
     <Dropdown placeholder='Author Ids' fluid multiple selection clearable
         options={users.length ? users.map((user, i) => ({key: i, text: user.username, value: user.id})) : []} 
-        onChange={(_, data) => props.dispatch(uiActions.setAuthorIds(data.value))}/>
+        onChange={(_, { value }) => props.dispatch(uiActions.setAuthorIds(value))}/>
       <label>
         Post Text, optional:
         <input type="text" name="Text" value={text} 
             onChange={(event) => props.dispatch(uiActions.setText(event.target.value))}/>
       </label>
-      <label>
-        Post Tags split by ",", optional:
-        <input type="text" name="Tags" value={tags} 
-            onChange={(event) => props.dispatch(uiActions.setTags(event.target.value.split(tagSpliter)))}/>
-      </label>
+      
+    <Dropdown
+      options={tagOptions.length? tagOptions : []}
+      placeholder="Add Tags"
+      search
+      selection
+      fluid
+      multiple
+      allowAdditions
+      value={tags.length? tags : []}
+      onAddItem={(_, { value }) => props.dispatch(uiActions.setTagOptions([{ text: value, value }, ...tagOptions]))}
+      onChange={(_, { value }) => props.dispatch(uiActions.setTags(value))}
+    />
       <input type="submit" value="Submit" />
     </form>
           <button key={1} onClick={() => navigate('/home')}>Back</button>
@@ -74,7 +79,6 @@ function UpdatePost(props) {
     </div>
   );
 }
-
 
 export default connect (
   (state) => {

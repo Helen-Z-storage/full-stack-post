@@ -12,7 +12,7 @@ const defaultSortByList = ["id", "reads", "likes", "popularity"];
 const sortByOptions = defaultSortByList.map((sortBy, i) => ({key: i, text: sortBy, value: sortBy}));
 
 const defaultDirectionList = ["asc", "desc"];
-const directionOptions = defaultDirectionList.map((sortBy, i) => ({key: i, text: sortBy, value: sortBy}));
+const directionOptions = defaultDirectionList.map((direction, i) => ({key: i, text: direction, value: direction}));
 
 function SearchPost(props) {
   const error = props.posts.getIn("posts.errorMsg".split("."));
@@ -71,6 +71,7 @@ function SearchPost(props) {
     props.dispatch(uiActions.setAuthorIds(""));
     props.dispatch(uiActions.setSortBy(""));
     props.dispatch(uiActions.setDirection(""));
+    const users = props.users.getIn("users.usersData".split("."));
     if (!users.length) {
       const token = window.localStorage.getItem("token");
       props.dispatch(pageActions.pageSearchAllUsers(token));
@@ -83,21 +84,21 @@ function SearchPost(props) {
     <form onSubmit={(event) => handleSearching(event)}>
       <Dropdown placeholder='Select Author Ids' fluid multiple selection clearable 
           options={users.length ? users.map((user, i) => ({key: i, text: user.username, value: user.id})) : []} 
-          onChange={(_, data) => props.dispatch(uiActions.setAuthorIds(data.value))}/>
+          onChange={(_, { value }) => props.dispatch(uiActions.setAuthorIds(value))}/>
       
       <Dropdown
         placeholder='Select Sort by'
         fluid
         selection
         options={sortByOptions}
-        onChange={(_, data) => props.dispatch(uiActions.setSortBy(data.value))}/>
+        onChange={(_, { value }) => props.dispatch(uiActions.setSortBy(value))}/>
 
       <Dropdown
           placeholder='Select Direction'
           fluid
           selection
           options={directionOptions}
-          onChange={(_, data) => props.dispatch(uiActions.setDirection(data.value))}/>
+          onChange={(_, { value }) => props.dispatch(uiActions.setDirection(value))}/>
 
       <input type="submit" value="Submit" />
     </form>

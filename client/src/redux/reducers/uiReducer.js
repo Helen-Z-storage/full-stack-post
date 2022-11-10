@@ -10,11 +10,12 @@ const initialState = () => {
             username:  "",
             password:  "",
 
-            authorIds: [],
-            sortBy:    "",
-            direction: "",
-            text:      "",
-            tags:      []
+            authorIds:  [],
+            sortBy:     "",
+            direction:  "",
+            text:       "",
+            tags:       [],
+            tagOptions: [],
         }
     )
 }
@@ -60,4 +61,8 @@ reducer.prototype[actionType.ui.setText] = (state, action) => {
 
 reducer.prototype[actionType.ui.setTags] = (state, action) => {
     return state.set("tags", action.payload);
+}
+
+reducer.prototype[actionType.ui.setTagOptions] = (state, action) => {
+    return state.set("tagOptions", action.payload);
 }
