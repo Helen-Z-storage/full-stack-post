@@ -1,6 +1,7 @@
 //import './App.css';
 import { useNavigate} from 'react-router-dom';
 import React, { useEffect } from 'react';
+import { Dropdown } from 'semantic-ui-react';
 
 import { connect } from "react-redux";
 import * as uiActions from "./redux/actions/uiActions";
@@ -11,6 +12,7 @@ function AddPost(props) {
   let error = props.posts.getIn("posts.errorMsg".split("."));
   const text = props.ui.get("text");
   const tags = props.ui.get("tags");
+  const tagOptions = props.ui.get("tagOptions");
   const navigate = useNavigate();
   
   const handleAdding = (event) => {
@@ -36,11 +38,18 @@ function AddPost(props) {
         <input type="text" name="Text" value={text} 
             onChange={(event) => props.dispatch(uiActions.setText(event.target.value))}/>
       </label>
-      <label>
-        Post Tags split by ",", optional:
-        <input type="text" name="Tags" value={tags.join()} 
-            onChange={(event) => props.dispatch(uiActions.setTags(event.target.value.split(",")))}/>
-      </label>
+    <Dropdown
+      options={tagOptions.length? tagOptions : []}
+      placeholder="Add Tags"
+      search
+      selection
+      fluid
+      multiple
+      allowAdditions
+      value={tags.length? tags : []}
+      onAddItem={(_, { value }) => props.dispatch(uiActions.setTagOptions([{ text: value, value }, ...tagOptions]))}
+      onChange={(_, { value }) => props.dispatch(uiActions.setTags(value))}
+    />
       <input type="submit" value="Submit" />
     </form>
           <button key={1} onClick={() => navigate('/home')}>Back</button>
