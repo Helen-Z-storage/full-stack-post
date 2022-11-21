@@ -310,7 +310,7 @@ describe('GET /api/posts', () => {
         sortBy: [7, 3],
       })
       .send();
-    expect(res.body.error).toEqual('Non valid sort By');
+    expect(res.body.error).toEqual('Non valid sort by');
     expect(res.status).toEqual(400);
   });
 
@@ -324,7 +324,7 @@ describe('GET /api/posts', () => {
         sortBy: '7',
       })
       .send();
-    expect(res.body.error).toEqual('Non valid sort By');
+    expect(res.body.error).toEqual('Non valid sort by');
     expect(res.status).toEqual(400);
   });
 
@@ -484,6 +484,19 @@ describe('PATCH /api/posts/:postId', () => {
     expect(res.body.error).toEqual('Post id 9 not created');
     expect(res.status).toEqual(404);
   });
+
+  it('should not update for post id is invalid.', async () => {
+    const token = makeToken(2);
+    const postId = "k";
+    const res = await request(app)
+      .patch(`/api/posts/${postId}`)
+      .set('x-access-token', token)
+      .send({
+        authorIds: [1, 2, 5],
+      });
+    expect(res.body.error).toEqual('Non valid post id');
+    expect(res.status).toEqual(404);
+  });
   
   it('should not update for any post are not exist in database.', async () => {
     // clear the Post table
@@ -513,19 +526,6 @@ describe('PATCH /api/posts/:postId', () => {
       });
     expect(res.body.error).toEqual('Only author can update this post');
     expect(res.status).toEqual(403);
-  });
-
-  it('should fail for user does not have id.', async () => {
-    const token = {};
-    const postId = 3;
-    const res = await request(app)
-      .patch(`/api/posts/${postId}`)
-      .set('x-access-token', token)
-      .send({
-        authorIds: [1, 2],
-      });
-    expect(res.body.error).toEqual("Didn't have logged in user");
-    expect(res.status).toEqual(401);
   });
 
   // fail for invalid author
@@ -610,4 +610,79 @@ describe('PATCH /api/posts/:postId', () => {
     expect(res.body.error).toEqual('Non valid text');
     expect(res.status).toEqual(400);
   });
+});
+
+
+describe('DELETE /api/posts/:postId', () => {
+  it('should only delete post when with author try to delete', async () => {
+    const token = makeToken(2);
+    const postId = 3;
+    const res = await request(app)
+      .delete(`/api/posts/${postId}`)
+      .set('x-access-token', token)
+      .send();
+    expect(res.body).toEqual({ deletedPost: 3 });
+    expect((await UserPost.getUserIdsByPost(3)).map((obj) => obj.dataValues.userId).sort()).toEqual([]);
+    expect((await Post.getPostById(3))).toEqual(null);
+    });
+
+  // fail for user not log in
+  it('fail for user not log in want to delete post', async () => {
+    const postId = 3;
+    const res = await request(app)
+      .delete(`/api/posts/${postId}`)
+      .send();
+    expect(res.body.error).toEqual("Didn't have logged in user");
+    expect(res.status).toEqual(401);
+  });
+
+  // fail for post does not exist in database
+  it('should not delete for post ID 9 does not exist in database.', async () => {
+    const token = makeToken(2);
+    const postId = 9;
+    const res = await request(app)
+      .delete(`/api/posts/${postId}`)
+      .set('x-access-token', token)
+      .send();
+    expect(res.body.error).toEqual('Post id 9 not created');
+    expect(res.status).toEqual(404);
+  });
+  
+  it('should not delete for post id is invalid.', async () => {
+    const token = makeToken(2);
+    const postId = "k";
+    const res = await request(app)
+      .delete(`/api/posts/${postId}`)
+      .set('x-access-token', token)
+      .send();
+    expect(res.body.error).toEqual("Non valid post id");
+    expect(res.status).toEqual(404);
+  });
+
+  it('should not delete for any post are not exist in database.', async () => {
+    // clear the Post table
+    Post.destroy({where: {}, truncate: true})
+
+    const token = makeToken(2);
+    const postId = 3;
+    const res = await request(app)
+      .delete(`/api/posts/${postId}`)
+      .set('x-access-token', token)
+      .send();
+    expect(res.body.error).toEqual('Post id does not exist');
+    expect(res.status).toEqual(404);
+  });
+
+  // fail for not author update
+  it('should fail for not author of post delete post.', async () => {
+    const token = makeToken(1);
+    const postId = 3;
+    const res = await request(app)
+      .delete(`/api/posts/${postId}`)
+      .set('x-access-token', token)
+      .send();
+    expect(res.body.error).toEqual('Only author can update this post');
+    expect(res.status).toEqual(403);
+  });
+
 });

@@ -6,6 +6,11 @@ const MainDic = require('./../mainDic');
 
 class PostHandler {
   static async validPostId(res, postId) {
+    // check whether postId is number
+    postId = parseInt(postId, 10);
+    if (!Number.isInteger(postId)) {
+      return ErrorHandler.codeError(res, 404, ErrorDic.invalidVariable(MainDic.validations.postId));
+    }
     
     // check whether Post table is empty
     if (!(await Post.existPost())) {

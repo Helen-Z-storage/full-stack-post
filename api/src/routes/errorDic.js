@@ -11,7 +11,7 @@ const unExistAuthor = (authorId) => `Author id ${authorId} not registered`;
 const unOwnerAuthor = 'Only author can update this post';
 const unExistPost = 'Post id does not exist';
 const unCreatedPost = (postId) => `Post id ${postId} not created`;
-const  invalidVariable = (message) => `Non valid ${message}`;
+const invalidVariable = (message) => `Non valid ${message}`;
 const unAuthorizedUser = "Didn't have logged in user";
 const nonStringAuthor = "Author id shold be string";
 

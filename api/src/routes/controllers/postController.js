@@ -18,7 +18,6 @@ class PostController {
       }
 
       const { text, tags } = req.body;
-      console.log(req.body);
 
       if (!text) {
         return ErrorHandler.codeError(res, 400, ErrorDic.newPostText);
@@ -69,7 +68,6 @@ class PostController {
         return ErrorHandler.codeError(res, 401, ErrorDic.unAuthorizedUser);
       }
 
-      console.log(req.query);
       const { authorIds } = req.query;
       let { sortBy, direction } = req.query;
 
@@ -78,13 +76,13 @@ class PostController {
       if (!sortBy) {
         sortBy = MainDic.defaultSortBy;
       } else {
-        const message = Object.keys({sortBy})[0].split(/(?=[A-Z])/).join(" ");
+        const message = MainDic.fetchPostsVarNames.sortBy;
         sortBy = PostHandler.validVar(res, sortBy, MainDic.string, false, message, MainDic.sortByDefault);
       }
       if (!direction) {
         direction = MainDic.defaultDirection;
       } else {
-        const message = Object.keys({direction})[0].split(/(?=[A-Z])/).join(" ");
+        const message = MainDic.fetchPostsVarNames.direction;
         direction = PostHandler.validVar(res, direction, MainDic.string, false, message, MainDic.sortDiretDefault);
       }
 
@@ -125,12 +123,12 @@ class PostController {
           tags = postObj.tags.split(MainDic.tagSpliter);
         }
       } else {
-        const message = Object.keys({tags})[0].split(/(?=[A-Z])/).join(" ");
+        const message = MainDic.updatePostVarNames.tags;
         tags = PostHandler.validVar(res, tags, MainDic.string, true, message);
       }
 
       if (text !== undefined) {
-        const message = Object.keys({text})[0].split(/(?=[A-Z])/).join(" ");
+        const message = MainDic.updatePostVarNames.text;
         text = PostHandler.validVar(res, text, MainDic.string, false, message);
       }
 
@@ -151,6 +149,32 @@ class PostController {
       }
 
       res.json({ post: postObj });
+    } catch (error) {
+      next(error);
+    }
+  }
+  
+  static async deletePost(req, res, next) {
+    try {
+      // authority Validation
+      if (!req.user || !req.user.id) {
+        return ErrorHandler.codeError(res, 401, ErrorDic.unAuthorizedUser);
+      }      
+
+      // check validation
+      let postId = req.params.postId;
+      const postObj = await PostHandler.validPostId(res, postId);
+      postId = postObj.id;
+      const authorId = ((await UserHandler.validAuthorId(res, [req.user.id])).authorIds)[0];
+      await UserHandler.validPostAuthor(res, authorId, postId);
+      
+      //delete the post
+      if (postObj && authorId) {
+        UserPost.destroy({ where: { postId: postId } });
+        Post.destroy({ where: { id: postId } });
+      }
+
+      res.json({ deletedPost: postId });
     } catch (error) {
       next(error);
     }
