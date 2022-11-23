@@ -89,4 +89,12 @@ Post.updateTextById = async function (text, postId) {
   );
 };
 
+Post.deleteOrphanPost = function (postsHasOwner) {
+  Post.destroy(
+    { 
+      where: {id: { [Sequelize.Op.notIn]: postsHasOwner }} 
+    }
+  );
+};
+
 module.exports = Post;

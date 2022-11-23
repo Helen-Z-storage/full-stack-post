@@ -1,7 +1,7 @@
 const globals = require('@jest/globals');
 const request = require('supertest');
 const app = require('./../src/app');
-const { User } = require('./../src/db/models');
+const { User, Post, UserPost } = require('./../src/db/models');
 const { makeToken } = require('./utils');
 
 const { describe, it, expect } = globals;
@@ -134,6 +134,72 @@ describe('GET /api/allUsers', () => {
     const res = await request(app)
       .get('/api/allUsers')
       .query({})
+      .send();
+    expect(res.body.error).toEqual("Didn't have logged in user");
+    expect(res.status).toEqual(401);
+  });
+});
+
+describe('DELETE /api/:', () => {
+  it('should only delete post when with author try to delete', async () => {
+    const token = makeToken(3);
+    const res = await request(app)
+      .delete(`/api/`)
+      .set('x-access-token', token)
+      .send();
+    expect(res.body).toEqual({ deletedUser: 3 });
+
+    // find user list of post create by other user with user 3
+    expect((await UserPost.getUserIdsByPost(3)).map((obj) => obj.dataValues.userId).sort()).toEqual([2]);
+
+    // find user list of post created by user 3 only
+    expect((await Post.getPostById(4))).toEqual(null);
+
+    // find user 3
+    expect((await User.findUserById(3))).toEqual(null);
+
+    // find user 3's UserPost obj
+    expect((await UserPost.getPostIdsByUser(3))).toEqual([]);
+    });
+
+  // fail for user not log in
+  it('should not delete for user not log in want to delete post', async () => {
+    const res = await request(app)
+      .delete(`/api/`)
+      .send();
+    expect(res.body.error).toEqual("Didn't have logged in user");
+    expect(res.status).toEqual(401);
+  });
+
+  // fail for user does not exist in database
+  it('should not delete for user ID 9 does not exist in database.', async () => {
+    const token = makeToken(9);
+    const res = await request(app)
+      .delete(`/api/`)
+      .set('x-access-token', token)
+      .send();
+    expect(res.body.error).toEqual("Didn't have logged in user");
+    expect(res.status).toEqual(401);
+  });
+  
+  it('should not delete for User id is invalid.', async () => {
+    const token = makeToken("k");
+    const res = await request(app)
+      .delete(`/api/`)
+      .set('x-access-token', token)
+      .send();
+    expect(res.body.error).toEqual("Didn't have logged in user");
+    expect(res.status).toEqual(401);
+  });
+
+  it('should not delete for any user are not exist in database.', async () => {
+    // clear the User table
+    User.destroy({where: {}, truncate: true})
+
+    const token = makeToken(2);
+    const res = await request(app)
+      .delete(`/api/`)
+      .set('x-access-token', token)
       .send();
     expect(res.body.error).toEqual("Didn't have logged in user");
     expect(res.status).toEqual(401);

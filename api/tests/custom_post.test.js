@@ -612,7 +612,6 @@ describe('PATCH /api/posts/:postId', () => {
   });
 });
 
-
 describe('DELETE /api/posts/:postId', () => {
   it('should only delete post when with author try to delete', async () => {
     const token = makeToken(2);
@@ -627,7 +626,7 @@ describe('DELETE /api/posts/:postId', () => {
     });
 
   // fail for user not log in
-  it('fail for user not log in want to delete post', async () => {
+  it('should not delete for user not log in want to delete post', async () => {
     const postId = 3;
     const res = await request(app)
       .delete(`/api/posts/${postId}`)

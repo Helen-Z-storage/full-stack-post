@@ -30,6 +30,7 @@ const UserPost = db.define(
     freezeTableName: true,
   }
 );
+
 UserPost.getUserIdsByPost = async function (postId) {
   return UserPost.findAll({
     attributes: ['userId'],
@@ -39,4 +40,17 @@ UserPost.getUserIdsByPost = async function (postId) {
   });
 };
 
+UserPost.getPostIdsByUser = async function (userId) {
+  return UserPost.findAll({
+    attributes: ['postId'],
+    where: {
+      userId: userId,
+    },
+  });
+};
+
+UserPost.getPostIdHasOwner = async function () {
+  const distinctPosts = await UserPost.aggregate('postId', 'DISTINCT', { plain: false });
+  return distinctPosts.map(postObj => postObj.DISTINCT);
+};
 module.exports = UserPost;
