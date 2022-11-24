@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
 const bcrypt = require('bcryptjs');
 const db = require('./../db');
+const Post = require('./post');
 
 const User = db.define(
   'user',
@@ -75,4 +76,8 @@ User.findUserByUsername = async function (username) {
   });
 };
 
+User.deleteUser = async function (userId) {
+  User.destroy({ where: { id: userId } });
+  await Post.deleteOrphanPost();
+}
 module.exports = User;

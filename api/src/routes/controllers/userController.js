@@ -107,9 +107,7 @@ class UserController {
 
       // delete user
       if (authorId) {
-        User.destroy({ where: { id: authorId } });
-        const PostsHasOwner = await UserPost.getPostIdHasOwner();
-        Post.deleteOrphanPost(PostsHasOwner);
+        await User.deleteUser(authorId);
       }
       res.json({ deletedUser: authorId });
     } catch (error) {

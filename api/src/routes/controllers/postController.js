@@ -170,8 +170,7 @@ class PostController {
       
       //delete the post
       if (postObj && authorId) {
-        UserPost.destroy({ where: { postId: postId } });
-        Post.destroy({ where: { id: postId } });
+        await Post.deletePost(postId);
       }
 
       res.json({ deletedPost: postId });

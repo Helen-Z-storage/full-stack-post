@@ -89,12 +89,18 @@ Post.updateTextById = async function (text, postId) {
   );
 };
 
-Post.deleteOrphanPost = function (postsHasOwner) {
+Post.deleteOrphanPost = async function () {
+  const postsHasOwner = await UserPost.getPostIdHasOwner();
   Post.destroy(
     { 
       where: {id: { [Sequelize.Op.notIn]: postsHasOwner }} 
     }
   );
 };
+
+Post.deletePost = async function (postId) {
+  Post.destroy({ where: { id: postId } });
+};
+
 
 module.exports = Post;
