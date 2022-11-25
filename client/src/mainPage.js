@@ -23,6 +23,7 @@ function MainPage(props) {
     useEffect(() => {
         // componentWillMount
         const token = window.localStorage.getItem("token");
+        console.log(token);
         if (token) {
             props.dispatch(uiActions.setToken(token));
         } else {

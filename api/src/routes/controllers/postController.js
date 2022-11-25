@@ -172,8 +172,8 @@ class PostController {
       if (postObj && authorId) {
         await Post.deletePost(postId);
       }
-
-      res.json({ deletedPost: postId });
+      console.log(postId);
+      res.json({ deletedPost: postId, post: postObj });
     } catch (error) {
       next(error);
     }

@@ -19,20 +19,20 @@ export default function reducer(state=initialState(), action) {
     return state;
 }
 
-reducer.prototype[actionType.posts.postsLoadUserPending] = (state, action) => {
+reducer.prototype[actionType.posts.postsLoadPending] = (state, action) => {
     return state.setIn("posts.loading".split("."), true)
                 .setIn("posts.loaded".split("."), false)
                 .setIn("posts.postsData".split("."), [])
                 .setIn("posts.errorMsg".split("."), "");
 }
 
-reducer.prototype[actionType.posts.postsLoadUserRejected] = (state, action) => {
+reducer.prototype[actionType.posts.postsLoadRejected] = (state, action) => {
     return state.setIn("posts.loading".split("."), false)
                 .setIn("posts.loaded".split("."), false)
                 .setIn("posts.postsData".split("."), [])
                 .setIn("posts.errorMsg".split("."), action.payload);
 }
-reducer.prototype[actionType.posts.postsLoadUserFulfilled] = (state, action) => {
+reducer.prototype[actionType.posts.postsLoadFulfilled] = (state, action) => {
     return state.setIn("posts.loading".split("."), false)
                 .setIn("posts.loaded".split("."), true)
                 .setIn("posts.postsData".split("."), action.payload)

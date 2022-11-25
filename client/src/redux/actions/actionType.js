@@ -25,13 +25,13 @@ export const actionType = {
         registerLoadUserRejected: `REGISTER_LOADUSER${ActionType.Rejected}`
     },
     users: {
-        usersLoadUserPending:  `USERS_LOADUSER${ActionType.Pending}`,
-        usersLoadUserFulfilled:`USERS_LOADUSER${ActionType.Fulfilled}`,
-        usersLoadUserRejected: `USERS_LOADUSER${ActionType.Rejected}`
+        usersLoadPending:  `USERS_LOAD${ActionType.Pending}`,
+        usersLoadFulfilled:`USERS_LOAD${ActionType.Fulfilled}`,
+        usersLoadRejected: `USERS_LOAD${ActionType.Rejected}`
     },
     posts: {
-        postsLoadUserPending:  `POSTS_LOADUSER${ActionType.Pending}`,
-        postsLoadUserFulfilled:`POSTS_LOADUSER${ActionType.Fulfilled}`,
-        postsLoadUserRejected: `POSTS_LOADUSER${ActionType.Rejected}`
+        postsLoadPending:  `POSTS_LOAD${ActionType.Pending}`,
+        postsLoadFulfilled:`POSTS_LOAD${ActionType.Fulfilled}`,
+        postsLoadRejected: `POSTS_LOAD${ActionType.Rejected}`
     },
 }

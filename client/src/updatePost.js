@@ -36,6 +36,14 @@ function UpdatePost(props) {
     event.preventDefault();
   }
 
+  const handleDeleting = (event) => {
+    const token = props.ui.get("token");
+    const postId = props.ui.get("postId");
+    props.dispatch(pageActions.pageDeletePosts(postId, token, navigate));
+    event.preventDefault();
+  }
+
+
   useEffect(() => {
     // componentWillMount
     props.dispatch(uiActions.setAuthorIds(""));
@@ -74,7 +82,8 @@ function UpdatePost(props) {
     />
       <input type="submit" value="Submit" />
     </form>
-          <button key={1} onClick={() => navigate('/home')}>Back</button>
+          <button key={1} onClick={(event) => handleDeleting(event)}>Delete</button>
+          <button key={2} onClick={() => navigate('/home')}>Back</button>
           <div>{error}</div>
     </div>
   );

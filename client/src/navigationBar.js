@@ -4,6 +4,7 @@ import React from 'react';
 
 import { connect } from "react-redux";
 import * as uiActions from "./redux/actions/uiActions";
+import * as pageActions from "./redux/actions/pageActions";
 
 function NavigationBar(props) {
   const navigate = useNavigate();
@@ -12,6 +13,13 @@ function NavigationBar(props) {
     alert("欢迎下次再来！");
     navigate('/login');
   }
+
+  const handleDeleting = (event) => {
+    const token = props.ui.get("token");
+    props.dispatch(pageActions.pageDeleteUser(token, navigate));
+    event.preventDefault();
+  }
+
   return (
     <div>
         <button key={1} onClick={() => navigate('/home')}>Home Page</button>
@@ -19,6 +27,7 @@ function NavigationBar(props) {
         <button key={3} onClick={() => navigate('/search')}>Search Post</button>
         <button key={4} onClick={() => navigate('/update')}>Update Post</button>
         <button key={5} onClick={() => handleLogout()}>Log Out</button>
+        <button key={6} onClick={(event) => handleDeleting(event)}>Delete current user</button>
     </div>
   );
 }

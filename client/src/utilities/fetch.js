@@ -22,3 +22,7 @@ export function post(url, data, headers = {}) {
 export function patch(url, data, headers = {}) {
     return axios.patch(url, data, config(headers))
 }
+
+export function del(url, headers = {}) {
+    return axios.delete(url, config(headers))
+}
