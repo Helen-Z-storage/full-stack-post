@@ -32,9 +32,17 @@ reducer.prototype[actionType.register.registerLoadUserRejected] = (state, action
                 .setIn("register.userData".split("."), {})
                 .setIn("register.errorMsg".split("."), action.payload);
 }
+
 reducer.prototype[actionType.register.registerLoadUserFulfilled] = (state, action) => {
     return state.setIn("register.loading".split("."), false)
                 .setIn("register.loaded".split("."), true)
                 .setIn("register.userData".split("."), action.payload)
+                .setIn("register.errorMsg".split("."), "");
+}
+
+reducer.prototype[actionType.register.registerErrMsgReset] = (state, _) => {
+    return state.setIn("register.loading".split("."), false)
+                .setIn("register.loaded".split("."), false)
+                .setIn("register.userData".split("."), {})
                 .setIn("register.errorMsg".split("."), "");
 }

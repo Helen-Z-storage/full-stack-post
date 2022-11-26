@@ -2,6 +2,18 @@ import { actionType } from "./actionType";
 import { get, post, patch, del } from "../../utilities/fetch";
 import * as uiActions from "./uiActions";
 
+export const loginErrMsgReset = () => {
+    return (dispatch) => {
+        dispatch({type: actionType.login.loginErrMsgReset});
+    }
+}
+
+export const registerErrMsgReset = () => {
+    return (dispatch) => {
+        dispatch({type: actionType.register.registerErrMsgReset});
+    }
+}
+
 export const pageLoginLoadUser = (username, password, navigate) => {
     return (dispatch) => {
         dispatch({type: actionType.login.loginLoadUserPending, payload: null});

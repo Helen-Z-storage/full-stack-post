@@ -61,9 +61,9 @@ function MainPage(props) {
         </li>);
     });
   return (
-    <div>
+    <div class="table-responsive">
     <NavigationBar/>
-    <table>
+    <table class="table">
         <tbody>
             <tr>
                 <td>

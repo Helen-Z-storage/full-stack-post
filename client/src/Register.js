@@ -1,8 +1,9 @@
 //import './App.css';
 import { useNavigate } from 'react-router-dom';
 import React, { useEffect } from 'react';
-
 import { connect } from "react-redux";
+import { Alert, Button, Form, FloatingLabel } from 'react-bootstrap';
+
 import * as uiActions from "./redux/actions/uiActions";
 import * as pageActions from "./redux/actions/pageActions";
 
@@ -22,27 +23,35 @@ function Register(props) {
     // componentWillMount
     props.dispatch(uiActions.setUsername(""));
     props.dispatch(uiActions.setPassword(""));
+    props.dispatch(pageActions.registerErrMsgReset());
     // return () => {// componmentWillUnmount}
 }, []);
 
   
   return (
     <div>
-    <form onSubmit={(event) => handleRegister(event)}>
-      <label>
-        User Name:
-        <input type="text" name="username" value={username} 
+    <Form>
+      <FloatingLabel
+          controlId="floatingInput"
+          label="Email address"
+          className="mb-3"
+        >
+          <Form.Control type="email" placeholder="name@example.com" 
             onChange={(event) => props.dispatch(uiActions.setUsername(event.target.value))}/>
-      </label>
-      <label>
-        Password:
-        <input type="text" name="password" value={password} 
+        </FloatingLabel>
+        <FloatingLabel controlId="floatingPassword" label="Password">
+          <Form.Control type="password" placeholder="Password" 
             onChange={(event) => props.dispatch(uiActions.setPassword(event.target.value))}/>
-      </label>
-      <input type="submit" value="Submit" />
-    </form>
-          <button key={1} onClick={() => navigate('/login')}>Login</button>
-          <div>{error}</div>
+        </FloatingLabel>
+
+        <Button variant="primary" type="submit" onClick={(event) => handleRegister(event)}>
+          Register
+        </Button>
+        <Button onClick={() => navigate('/login')}>
+          Back to Login page
+        </Button>
+        {error && <Alert key="danger" variant="danger"> {error} </Alert>}
+    </Form>
     </div>
   );
 }

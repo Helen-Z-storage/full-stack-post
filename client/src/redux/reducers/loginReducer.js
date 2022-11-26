@@ -32,9 +32,17 @@ reducer.prototype[actionType.login.loginLoadUserRejected] = (state, action) => {
                 .setIn("login.userData".split("."), {})
                 .setIn("login.errorMsg".split("."), action.payload);
 }
+
 reducer.prototype[actionType.login.loginLoadUserFulfilled] = (state, action) => {
     return state.setIn("login.loading".split("."), false)
                 .setIn("login.loaded".split("."), true)
                 .setIn("login.userData".split("."), action.payload)
+                .setIn("login.errorMsg".split("."), "");
+}
+
+reducer.prototype[actionType.login.loginErrMsgReset] = (state, _) => {
+    return state.setIn("login.loading".split("."), false)
+                .setIn("login.loaded".split("."), false)
+                .setIn("login.userData".split("."), {})
                 .setIn("login.errorMsg".split("."), "");
 }
