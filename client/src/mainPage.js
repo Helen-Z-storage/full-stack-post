@@ -62,7 +62,6 @@ function MainPage(props) {
     });
   return (
     <div class="table-responsive">
-    <NavigationBar/>
     <table class="table">
         <tbody>
             <tr>

@@ -6,6 +6,7 @@ import MainPage from './mainPage';
 import AddPost from './addPost';
 import SearchPost from './searchPost';
 import UpdatePost from './updatePost';
+import NavigationBar from './navigationBar';
 import * as uiActions from "./redux/actions/uiActions";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 
@@ -22,6 +23,8 @@ function App(props) {
   }, []);
 
   return (
+    <div>
+    {token? <NavigationBar/> : <div></div>}
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<Login store={props}/>} />
@@ -33,6 +36,7 @@ function App(props) {
         <Route path="/" element={token ? (<Navigate to="/home" exact />) : (<Navigate to="/login" exact />)}/>
       </Routes>
     </BrowserRouter>
+    </div>
   );
 }
 export default connect ((state) => {return {ui: state.ui}})(App);

@@ -54,14 +54,13 @@ export const pageSearchAllUsers = (token) => {
     }
 }
 
-export const pageDeleteUser = (token, navigate) => {
+export const pageDeleteUser = (token) => {
     return (dispatch) => {
         dispatch({type: actionType.users.usersLoadPending, payload: null});
         del("http://localhost:8080/api/", {'x-access-token': token})
         .then(res => {
             dispatch({type: actionType.users.usersLoadFulfilled, payload: res.users});
             window.localStorage.removeItem("token");
-            navigate('/login');
             alert("成功删除");
         })
         .catch(error => {dispatch({type: actionType.users.usersLoadRejected, payload: error.response.data.error})})
