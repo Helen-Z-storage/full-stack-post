@@ -64,16 +64,15 @@ function UpdatePost(props) {
         <Dropdown placeholder='Author Ids' fluid multiple selection clearable
             options={users.length ? users.map((user, i) => ({key: i, text: user.username, value: user.id})) : []} 
             onChange={(_, { value }) => props.dispatch(uiActions.setAuthorIds(value))}/>
-
-        <FloatingLabel
-            controlId="floatingInput"
-            label="Post Text"
-            className="mb-3"
-          >
-          <Form.Control type="Post Text" placeholder="name@example.com" 
+      
+      <FloatingLabel controlId="floatingTextarea2" label="Post Text">
+        <Form.Control
+          as="textarea"
+          placeholder="This is default Post body"
+          style={{ height: '100px' }}
             onChange={(event) => props.dispatch(uiActions.setText(event.target.value))}/>
         </FloatingLabel>
-
+        
         <Dropdown
           options={tagOptions.length? tagOptions : []}
           placeholder="Add Tags"

@@ -34,16 +34,15 @@ function AddPost(props) {
   return (
     <div>
       
-      <Form>    
-
-        <FloatingLabel
-            controlId="floatingInput"
-            label="Post Text"
-            className="mb-3"
-          >
-          <Form.Control type="Post Text" placeholder="name@example.com" 
+      <Form>            
+        <FloatingLabel controlId="floatingTextarea2" label="Post Text">
+        <Form.Control
+          as="textarea"
+          placeholder="This is default Post body"
+          style={{ height: '100px' }}
             onChange={(event) => props.dispatch(uiActions.setText(event.target.value))}/>
         </FloatingLabel>
+        
 
         <Dropdown
           options={tagOptions.length? tagOptions : []}

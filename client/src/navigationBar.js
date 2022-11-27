@@ -23,38 +23,10 @@ function NavigationBar(props) {
   }
 
   return (
-    /*
-    <div>
-        <Button key={1} onClick={() => navigate('/home')}>Home Page</Button>
-        <Button key={2} onClick={() => navigate('/add')}>Add Post</Button>
-        <Button key={3} onClick={() => navigate('/search')}>Search Post</Button>
-        <Button key={4} onClick={() => navigate('/update')}>Update Post</Button>
-        <Button key={5} onClick={() => handleLogout()}>Log Out</Button>
-        <Button key={6} onClick={(event) => handleDeleting(event)}>Delete current user</Button>
-    </div>
-    <>
-      <Navbar bg="primary" variant="dark" fixed="left">
-        <Container>
-          <Navbar.Brand>UserName</Navbar.Brand>
-          <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#features">Add</Nav.Link>
-            <Nav.Link href="#pricing">Search</Nav.Link>
-            <Nav.Link href="#pricing">LogOut</Nav.Link>
-            <Nav.Link href="#pricing">DeleteUser</Nav.Link>
-          </Nav>
-        </Container>
-      </Navbar>
-    </>
-    
-    */
-    <Navbar bg="primary" variant="dark">
+    <Navbar bg="primary" variant="dark" fixed="top" sticky="top">
       <Container>
         <Navbar.Brand>UserName</Navbar.Brand>
-        <Nav 
-        className="me-auto"
-        variant="pills" 
-        defaultActiveKey="/home">
+        <Nav className="me-auto">
           <Nav.Link href="/home">Home Page</Nav.Link>
           <Nav.Link href="/add">Add Post</Nav.Link>
           <Nav.Link href="/search">Search Post</Nav.Link>

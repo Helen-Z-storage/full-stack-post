@@ -3,6 +3,9 @@ import React, { useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import NavigationBar from './navigationBar';
 import {useNavigate} from 'react-router-dom';
+import { Dropdown, Label } from 'semantic-ui-react';
+import { Alert, ListGroup, Table } from 'react-bootstrap';
+
 
 import { connect } from "react-redux";
 import * as uiActions from "./redux/actions/uiActions";
@@ -38,38 +41,43 @@ function MainPage(props) {
 
     postLst = posts.map((post) => {
         return (
-        <li key={uuidv4()}>
-            <table onClick={() => handleClick(post.id)}>
+        <ListGroup.Item action key={uuidv4()}>
+            <Table onClick={() => handleClick(post.id)}>
                 <tbody>
                     <tr>
                         <td colSpan="3">
                             {post.text}
                         </td>
                     </tr>
+                    
+                    {post.tags? 
                     <tr>
                         <td colSpan="3">
-                            {post.tags}
+                          {post.tags.split(",").map((tag) => <Label as='a' tag> {tag} </Label>)}
                         </td>
                     </tr>
+                    : 
+                    <tr></tr>}
+                    
                     <tr>
                         <td>likes: {post.likes}</td>
                         <td>popularity: {post.popularity}</td>
                         <td>reads: {post.reads}</td>
                     </tr>
                 </tbody>
-            </table>
-        </li>);
+            </Table>
+        </ListGroup.Item>);
     });
   return (
-    <div class="table-responsive">
+    <div>
     <table class="table">
         <tbody>
             <tr>
                 <td>
-                    {error}
-                    <ul>
+                    {error && <Alert key="danger" variant="danger"> {error} </Alert>}
+                    <ListGroup>
                         {postLst}
-                    </ul>
+                    </ListGroup>
                 </td>
             </tr>
         </tbody>
