@@ -44,7 +44,7 @@ function Login(props) {
           label="Email address"
           className="mb-3"
         >
-          <Form.Control type="email" placeholder="name@example.com" 
+          <Form.Control type="text" placeholder="name@example.com" 
             onChange={(event) => props.dispatch(uiActions.setUsername(event.target.value))}/>
         </FloatingLabel>
         <FloatingLabel controlId="floatingPassword" label="Password">
@@ -53,7 +53,7 @@ function Login(props) {
         </FloatingLabel>
 
         <Button variant="primary" type="submit" onClick={(event) => handleLogin(event)}>
-          Submit
+          Log in
         </Button>
         <Button onClick={() => navigate('/register')}>
           Register new user

@@ -6,6 +6,8 @@ import { v4 as uuidv4 } from 'uuid';
 import * as uiActions from "./redux/actions/uiActions";
 import * as pageActions from "./redux/actions/pageActions";
 import { Dropdown } from 'semantic-ui-react';
+import { Alert, Button, Form, FloatingLabel } from 'react-bootstrap';
+
 
 const tagSpliter = ",";
 const defaultSortByList = ["id", "reads", "likes", "popularity"];
@@ -80,29 +82,35 @@ function SearchPost(props) {
   }, []);
 
   return (
-    <div>
-    <form onSubmit={(event) => handleSearching(event)}>
-      <Dropdown placeholder='Select Author Ids' fluid multiple selection clearable 
-          options={users.length ? users.map((user, i) => ({key: i, text: user.username, value: user.id})) : []} 
-          onChange={(_, { value }) => props.dispatch(uiActions.setAuthorIds(value))}/>
-      
-      <Dropdown
-        placeholder='Select Sort by'
-        fluid
-        selection
-        options={sortByOptions}
-        onChange={(_, { value }) => props.dispatch(uiActions.setSortBy(value))}/>
 
-      <Dropdown
-          placeholder='Select Direction'
+    <div>
+      
+      <Form>    
+        <Dropdown placeholder='Select Author Ids' fluid multiple selection clearable 
+            options={users.length ? users.map((user, i) => ({key: i, text: user.username, value: user.id})) : []} 
+            onChange={(_, { value }) => props.dispatch(uiActions.setAuthorIds(value))}/>
+        
+        <Dropdown
+          placeholder='Select Sort by'
           fluid
           selection
-          options={directionOptions}
-          onChange={(_, { value }) => props.dispatch(uiActions.setDirection(value))}/>
+          options={sortByOptions}
+          onChange={(_, { value }) => props.dispatch(uiActions.setSortBy(value))}/>
 
-      <input type="submit" value="Submit" />
-    </form>
-          <button key={1} onClick={() => navigate('/home')}>Back</button>
+        <Dropdown
+            placeholder='Select Direction'
+            fluid
+            selection
+            options={directionOptions}
+            onChange={(_, { value }) => props.dispatch(uiActions.setDirection(value))}/>
+
+
+        <Button variant="primary" type="submit" onClick={(event) => handleSearching(event)}>
+          Search
+        </Button>
+        
+        {error && <Alert key="danger" variant="danger"> {error} </Alert>}
+      </Form>
       <table>
           <tbody>
               <tr>

@@ -36,7 +36,7 @@ function Register(props) {
           label="Email address"
           className="mb-3"
         >
-          <Form.Control type="email" placeholder="name@example.com" 
+          <Form.Control type="text" placeholder="name@example.com" 
             onChange={(event) => props.dispatch(uiActions.setUsername(event.target.value))}/>
         </FloatingLabel>
         <FloatingLabel controlId="floatingPassword" label="Password">

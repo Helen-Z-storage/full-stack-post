@@ -2,8 +2,9 @@
 import { useNavigate} from 'react-router-dom';
 import React, { useEffect } from 'react';
 import { Dropdown } from 'semantic-ui-react';
-
 import { connect } from "react-redux";
+import { Alert, Button, Form, FloatingLabel } from 'react-bootstrap';
+
 import * as uiActions from "./redux/actions/uiActions";
 import * as pageActions from "./redux/actions/pageActions";
 
@@ -32,28 +33,37 @@ function AddPost(props) {
 
   return (
     <div>
-    <form onSubmit={(event) => handleAdding(event)}>
-      <label>
-        Post Text, required:
-        <input type="text" name="Text" value={text} 
+      
+      <Form>    
+
+        <FloatingLabel
+            controlId="floatingInput"
+            label="Post Text"
+            className="mb-3"
+          >
+          <Form.Control type="Post Text" placeholder="name@example.com" 
             onChange={(event) => props.dispatch(uiActions.setText(event.target.value))}/>
-      </label>
-    <Dropdown
-      options={tagOptions.length? tagOptions : []}
-      placeholder="Add Tags"
-      search
-      selection
-      fluid
-      multiple
-      allowAdditions
-      value={tags.length? tags : []}
-      onAddItem={(_, { value }) => props.dispatch(uiActions.setTagOptions([{ text: value, value }, ...tagOptions]))}
-      onChange={(_, { value }) => props.dispatch(uiActions.setTags(value))}
-    />
-      <input type="submit" value="Submit" />
-    </form>
-          <button key={1} onClick={() => navigate('/home')}>Back</button>
-          <div>{error}</div>
+        </FloatingLabel>
+
+        <Dropdown
+          options={tagOptions.length? tagOptions : []}
+          placeholder="Add Tags"
+          search
+          selection
+          fluid
+          multiple
+          allowAdditions
+          value={tags.length? tags : []}
+          onAddItem={(_, { value }) => props.dispatch(uiActions.setTagOptions([{ text: value, value }, ...tagOptions]))}
+          onChange={(_, { value }) => props.dispatch(uiActions.setTags(value))}
+        />
+
+        <Button variant="primary" type="submit" onClick={(event) => handleAdding(event)}>
+          Add
+        </Button>
+        
+        {error && <Alert key="danger" variant="danger"> {error} </Alert>}
+      </Form>
     </div>
   );
 }

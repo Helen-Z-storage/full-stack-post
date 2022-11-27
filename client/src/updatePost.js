@@ -2,8 +2,9 @@
 import { useNavigate} from 'react-router-dom';
 import React, { useEffect } from 'react';
 import { Dropdown } from 'semantic-ui-react';
-
 import { connect } from "react-redux";
+import { Alert, Button, Form, FloatingLabel } from 'react-bootstrap';
+
 import * as uiActions from "./redux/actions/uiActions";
 import * as pageActions from "./redux/actions/pageActions";
 const tagSpliter = ",";
@@ -58,33 +59,43 @@ function UpdatePost(props) {
 
   return (
     <div>
-    <form onSubmit={(event) => handleUpdating(event)}>
-    <Dropdown placeholder='Author Ids' fluid multiple selection clearable
-        options={users.length ? users.map((user, i) => ({key: i, text: user.username, value: user.id})) : []} 
-        onChange={(_, { value }) => props.dispatch(uiActions.setAuthorIds(value))}/>
-      <label>
-        Post Text, optional:
-        <input type="text" name="Text" value={text} 
-            onChange={(event) => props.dispatch(uiActions.setText(event.target.value))}/>
-      </label>
       
-    <Dropdown
-      options={tagOptions.length? tagOptions : []}
-      placeholder="Add Tags"
-      search
-      selection
-      fluid
-      multiple
-      allowAdditions
-      value={tags.length? tags : []}
-      onAddItem={(_, { value }) => props.dispatch(uiActions.setTagOptions([{ text: value, value }, ...tagOptions]))}
-      onChange={(_, { value }) => props.dispatch(uiActions.setTags(value))}
-    />
-      <input type="submit" value="Submit" />
-    </form>
-          <button key={1} onClick={(event) => handleDeleting(event)}>Delete</button>
-          <button key={2} onClick={() => navigate('/home')}>Back</button>
-          <div>{error}</div>
+      <Form>    
+        <Dropdown placeholder='Author Ids' fluid multiple selection clearable
+            options={users.length ? users.map((user, i) => ({key: i, text: user.username, value: user.id})) : []} 
+            onChange={(_, { value }) => props.dispatch(uiActions.setAuthorIds(value))}/>
+
+        <FloatingLabel
+            controlId="floatingInput"
+            label="Post Text"
+            className="mb-3"
+          >
+          <Form.Control type="Post Text" placeholder="name@example.com" 
+            onChange={(event) => props.dispatch(uiActions.setText(event.target.value))}/>
+        </FloatingLabel>
+
+        <Dropdown
+          options={tagOptions.length? tagOptions : []}
+          placeholder="Add Tags"
+          search
+          selection
+          fluid
+          multiple
+          allowAdditions
+          value={tags.length? tags : []}
+          onAddItem={(_, { value }) => props.dispatch(uiActions.setTagOptions([{ text: value, value }, ...tagOptions]))}
+          onChange={(_, { value }) => props.dispatch(uiActions.setTags(value))}
+        />
+
+        <Button variant="primary" type="submit" onClick={(event) => handleUpdating(event)}>
+          Update
+        </Button>
+        <Button onClick={(event) => handleDeleting(event)}>
+          Delete
+        </Button>
+        
+        {error && <Alert key="danger" variant="danger"> {error} </Alert>}
+      </Form>
     </div>
   );
 }
