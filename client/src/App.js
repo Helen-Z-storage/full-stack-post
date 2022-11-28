@@ -24,8 +24,8 @@ function App(props) {
 
   return (
     <div>
-    {token? <NavigationBar/> : <div></div>}
     <BrowserRouter>
+      {token? <NavigationBar/> : <div></div>}
       <Routes>
         <Route path="/login" element={<Login store={props}/>} />
         <Route path="/register" element={<Register store={props}/>} />

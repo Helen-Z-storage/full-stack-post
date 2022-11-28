@@ -57,7 +57,7 @@ function SearchPost(props) {
                   {post.tags? 
                   <tr>
                       <td colSpan="3">
-                          {post.tags.split(",").map((tag) => <Label as='a' tag> {tag} </Label>)}
+                          {post.tags.split(",").map((tag) => <Label as='a' tag key={uuidv4()}> {tag} </Label>)}
                       </td>
                   </tr>
                   : 

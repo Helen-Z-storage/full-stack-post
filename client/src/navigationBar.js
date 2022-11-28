@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from "react-redux";
 import { Button } from 'react-bootstrap';
 import { Navbar, Nav, Container, Offcanvas, NavDropdown, Form } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 import * as uiActions from "./redux/actions/uiActions";
 import * as pageActions from "./redux/actions/pageActions";
@@ -26,12 +27,12 @@ function NavigationBar(props) {
     <Navbar bg="primary" variant="dark" fixed="top" sticky="top">
       <Container>
         <Navbar.Brand>UserName</Navbar.Brand>
-        <Nav className="me-auto">
-          <Nav.Link href="/home">Home Page</Nav.Link>
-          <Nav.Link href="/add">Add Post</Nav.Link>
-          <Nav.Link href="/search">Search Post</Nav.Link>
-          <Nav.Link href="/login" onClick={() => handleLogout()}>Log Out</Nav.Link>
-          <Nav.Link href="/login" onClick={(event) => handleDeleting(event)}>Delete User</Nav.Link>
+        <Nav className="me-auto" defaultActiveKey="/home">
+          <Nav.Link as={Link} to="/home">Home Page</Nav.Link>
+          <Nav.Link as={Link} to="/add">Add Post</Nav.Link>
+          <Nav.Link as={Link} to="/search">Search Post</Nav.Link>
+          <Nav.Link as={Link} to="/login" onClick={() => handleLogout()}>Log Out</Nav.Link>
+          <Nav.Link as={Link} to="/login" onClick={(event) => handleDeleting(event)}>Delete User</Nav.Link>
         </Nav>
       </Container>
     </Navbar>
