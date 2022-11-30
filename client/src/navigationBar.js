@@ -1,6 +1,6 @@
 //import './App.css';
 import { useNavigate } from 'react-router-dom';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from "react-redux";
 import { Button } from 'react-bootstrap';
 import { Navbar, Nav, Container, Offcanvas, NavDropdown, Form } from 'react-bootstrap';
@@ -12,9 +12,8 @@ import * as pageActions from "./redux/actions/pageActions";
 function NavigationBar(props) {
   //const navigate = useNavigate();
   const handleLogout = () => {
-    window.localStorage.removeItem("token");
+    window.localStorage.clear();
     alert("欢迎下次再来！");
-    ;
   }
 
   const handleDeleting = (event) => {
@@ -23,10 +22,12 @@ function NavigationBar(props) {
     event.preventDefault();
   }
 
+  const username = window.localStorage.getItem("username");
+  
   return (
     <Navbar bg="primary" variant="dark" fixed="top" sticky="top">
       <Container>
-        <Navbar.Brand>UserName</Navbar.Brand>
+        <Navbar.Brand>{username}</Navbar.Brand>
         <Nav className="me-auto" defaultActiveKey="/home">
           <Nav.Link as={Link} to="/home">Home Page</Nav.Link>
           <Nav.Link as={Link} to="/add">Add Post</Nav.Link>

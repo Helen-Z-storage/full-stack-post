@@ -8,13 +8,23 @@ import SearchPost from './searchPost';
 import UpdatePost from './updatePost';
 import NavigationBar from './navigationBar';
 import * as uiActions from "./redux/actions/uiActions";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
-
+import { BrowserRouter, Route, Routes, Navigate, Outlet} from "react-router-dom";
 import { connect } from "react-redux";
+import { isExpired } from "./utilities/helpers";
 
 function App(props) {
-  let token = window.localStorage.getItem("token");
+  const token = window.localStorage.getItem("token");
   
+  const AuthWrapper = () => {
+    if (isExpired(token)) {
+      window.localStorage.clear();
+      return <Navigate to="/login" replace />;
+    }
+    else {
+      return <Outlet />;
+    }
+  };
+
   // keep log in status
   useEffect(() => {
     if (token) {
@@ -25,14 +35,23 @@ function App(props) {
   return (
     <div>
     <BrowserRouter>
-      {token? <NavigationBar/> : <div></div>}
+      {token && <NavigationBar/>}
       <Routes>
         <Route path="/login" element={<Login store={props}/>} />
         <Route path="/register" element={<Register store={props}/>} />
-        <Route path="/home" element={<MainPage store={props}/>} />
-        <Route path="/add" element={<AddPost store={props}/>} />
-        <Route path="/search" element={<SearchPost store={props}/>} />
-        <Route path="/update" element={<UpdatePost store={props}/>} />
+        
+        <Route element={<AuthWrapper />}>
+          <Route path="/home" element={<MainPage store={props}/>} />
+        </Route>
+        <Route element={<AuthWrapper />}>
+          <Route path="/add" element={<AddPost store={props}/>} />
+        </Route>
+        <Route element={<AuthWrapper />}>
+          <Route path="/search" element={<SearchPost store={props}/>} />
+        </Route>        
+        <Route element={<AuthWrapper />}>
+          <Route path="/update" element={<UpdatePost store={props}/>} />
+        </Route>
         <Route path="/" element={token ? (<Navigate to="/home" exact />) : (<Navigate to="/login" exact />)}/>
       </Routes>
     </BrowserRouter>

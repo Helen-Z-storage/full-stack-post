@@ -1,5 +1,5 @@
 
-import axios from 'axios'
+import axios from 'axios';
 
 let config = (headers) => ({
     baseURL: "http://localhost:8080/api/",
@@ -9,7 +9,6 @@ let config = (headers) => ({
 
 // response interceptor
 axios.interceptors.response.use(res => res.data);
-
 
 export function get(url, headers = {}) {
     return axios.get(url, config(headers))

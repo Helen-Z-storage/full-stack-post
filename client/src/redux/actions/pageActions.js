@@ -24,6 +24,7 @@ export const pageLoginLoadUser = (username, password, navigate) => {
             navigate('/home');
             dispatch(uiActions.setToken(res.token));
             window.localStorage.setItem("token", res.token);
+            window.localStorage.setItem("username", res.username);
             dispatch(pageSearchAllUsers(res.token));
         })
         .catch(error => {dispatch({type: actionType.login.loginLoadUserRejected, payload: error.response.data.error})})
@@ -60,7 +61,7 @@ export const pageDeleteUser = (token) => {
         del("http://localhost:8080/api/", {'x-access-token': token})
         .then(res => {
             dispatch({type: actionType.users.usersLoadFulfilled, payload: res.users});
-            window.localStorage.removeItem("token");
+            window.localStorage.clear();
             alert("成功删除");
         })
         .catch(error => {dispatch({type: actionType.users.usersLoadRejected, payload: error.response.data.error})})

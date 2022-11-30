@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import NavigationBar from './navigationBar';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Dropdown, Label } from 'semantic-ui-react';
 import { Alert, ListGroup, Table } from 'react-bootstrap';
 
@@ -26,7 +26,6 @@ function MainPage(props) {
     useEffect(() => {
         // componentWillMount
         const token = window.localStorage.getItem("token");
-        console.log(token);
         if (token) {
             props.dispatch(uiActions.setToken(token));
         } else {
@@ -68,6 +67,7 @@ function MainPage(props) {
             </Table>
         </ListGroup.Item>);
     });
+    
   return (
     <div>
     <table className="table">
